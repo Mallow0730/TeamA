@@ -19,6 +19,31 @@ _**Sourcetreeについて**_
 
 - コミットは頻繁に行うこと
 
----
+# 概要
 
-参考文献　https://github.com/ItoSeiy/2DShooting-first-grade
+バンタンゲームアカデミーのチーム制作の授業で制作中のゲームです
+
+# 制作人数
+バンタンゲームアカデミー高等部 2年 ゲーム制作専攻 5名 (敬称略)
+
+ディレクター兼プランナー　[太田佳寿弥]()
+
+プロジェクトマネージャー兼プログラマー　[橋本凛紅](https://github.com/rikuriku0402)
+
+プランナー　[金田柊也](https://github.com/Shuukane1201)
+
+プログラマー　[安達青](https://github.com/Mallow0730)
+
+プログラマー　[米丸一護](https://github.com/YONE15)
+
+# 制作形式
+
+- Unity
+- Github
+- Sourcetree
+
+上記の3点を用いて制作中
+
+# 参考文献
+
+https://github.com/ItoSeiy/2DShooting-first-grade
