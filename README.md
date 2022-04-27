@@ -13,4 +13,4 @@
 
 コミットは頻繁に行うこと
 
-引用元　https://github.com/ItoSeiy/2DShooting-first-grade/edit/develop/README.md
+参考文献　https://github.com/ItoSeiy/2DShooting-first-grade/edit/develop/README.md
