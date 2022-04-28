@@ -1,3 +1,5 @@
+# Wiki
+[Wiki](https://github.com/Mallow0730/TeamA/wiki)
 # 規則
 _**Unityについて**_
 
