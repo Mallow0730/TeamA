@@ -1,5 +1,5 @@
-# Wiki
-[ActionRPG（タイトル未定）](https://github.com/Mallow0730/TeamA/wiki)
+# このプロジェクトについて
+[Wiki](https://github.com/Mallow0730/TeamA/wiki)
 # 規則
 _**Unityについて**_
 
