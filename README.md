@@ -1,5 +1,5 @@
 # このプロジェクトについて
-[Wiki](https://github.com/Mallow0730/TeamA/wiki)
+**[Wiki](https://github.com/Mallow0730/TeamA/wiki)**
 
 # 概要
 
