@@ -1,5 +1,5 @@
 # チーム制作について
-**[Wiki](https://github.com/Mallow0730/TeamA/wiki)**
+**[重要](https://github.com/Mallow0730/TeamA/wiki)**
 
 # 概要
 
@@ -21,7 +21,7 @@
 # 制作形式
 
 - Unity
-- Github
+- GitHub
 - Sourcetree
 
 上記の3点を用いて制作中
