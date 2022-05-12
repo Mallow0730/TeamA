@@ -1,9 +1,9 @@
 # チーム制作について
-**[重要](https://github.com/Mallow0730/TeamA/wiki)**
+**[重要](https://github.com/Mallow0730/TeamA/wiki)** (wikiに飛びます)
 
 # 概要
 
-バンタンゲームアカデミーのチーム制作の授業で制作中のゲームです
+バンタンゲームアカデミーのチーム制作の授業で制作中のアクションRPGゲームです
 
 # 制作人数
 [バンタンゲームアカデミー高等部](https://www.vantan-gamehs.com/index.php) 東京校 2年 ゲーム制作専攻21生 5名 (敬称略)
@@ -20,7 +20,7 @@
 
 # 制作形式
 
-- Unity
+- Unity (2019.4.25f1)
 - GitHub
 - Sourcetree
 
