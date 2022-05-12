@@ -12,13 +12,13 @@
 # 制作人数
 [バンタンゲームアカデミー高等部](https://www.vantan-gamehs.com/index.php) 東京校 2年 ゲーム制作専攻21生 5名 (敬称略)
 
-| 役職 | 名前 | 作業内容 |
-| ---- | ---- | ---- |
-| ディレクター兼プランナー　| [太田佳寿弥](https://github.com/KazuyaOta)　| タイトル作成 |
-| プロジェクトマネージャー兼プログラマー　| [橋本凛紅](https://github.com/rikuriku0402) | バトル関連 |
+| 役職 | 名前 |
+| ---- | ---- |
+| ディレクター兼プランナー　| [太田佳寿弥](https://github.com/KazuyaOta)　|
+| プロジェクトマネージャー兼プログラマー　| [橋本凛紅](https://github.com/rikuriku0402) |
 | プランナー　| [金田柊也](https://github.com/Shuukane1201) |  
-| プログラマー　| [安達青](https://github.com/Mallow0730) | プロジェクト管理, ショップ関連 |
-| プログラマー　| [米丸一護](https://github.com/YONE15)　| レベルアップ関連 |
+| プログラマー　| [安達青](https://github.com/Mallow0730) |
+| プログラマー　| [米丸一護](https://github.com/YONE15)　|
 
 # 制作形式
 
