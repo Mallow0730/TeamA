@@ -30,14 +30,10 @@ public class Player : MonoBehaviour
 
     public Text expText;
 
-    public GameObject sword_Box;
-
-    int eAttack;
-
     //[Header("プレイヤーアタッチ")] public GameObject player;
-    [Header("プレイヤーHP")] public int playerHP;
+    [Header("プレイヤーHP")] public int playerHp;
     [Header("プレイヤーダメージ")] public int playerDamage;
-    [Header("プレイヤーアタック")] private int _playerAttack;
+    [Header("エネミーアタック")] public int enemyAttack;
 
 
     private void Awake()
@@ -47,6 +43,7 @@ public class Player : MonoBehaviour
         _playerActionsAsset = new PS4();
         _canMove = true;
         _targetRotation = transform.rotation;
+        enemyScript = GetComponent<Enemy>();
     }
 
     private void OnEnable()
@@ -82,18 +79,14 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        eAttack = enemyScript.EAttackScore;
+
     }
 
     void Update()
     {
         _animator.SetFloat("speed", _rb.velocity.sqrMagnitude / _maxSpeed);
 
-        if (playerHP <= 0)
-        {
-            BattleManager.battleInstance.player.SetActive(false);
-            print("GameOver");
-        }
+
     }
 
     private void FixedUpdate()
@@ -122,13 +115,7 @@ public class Player : MonoBehaviour
         _rb.angularVelocity = Vector3.zero;
 
         _animator.SetTrigger("attack");
-        sword_Box.SetActive(true);
-        StartCoroutine(SwordBoxFalse());
-    }
-    IEnumerator SwordBoxFalse()
-    {
-        yield return new WaitForSeconds(0.7f);
-        sword_Box.SetActive(false);
+
     }
     private void Bclck(InputAction.CallbackContext obj)
     {
@@ -199,8 +186,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.tag == enemyTag)
         {
             //Unityの方のTag消しとけ
-            playerHP -= eAttack; 
-            print("残りのPlayerのHP" + playerHP);
+            //playerHp -= enemyScript.enemyAttack;
         }
     }
 
@@ -208,17 +194,5 @@ public class Player : MonoBehaviour
     {
         _animator.SetTrigger("speedUp");
         Debug.Log("a");
-    }
-
-    public int PAttackScore
-    {
-        get
-        {
-            return playerDamage;
-        }
-        private set
-        {
-            playerDamage = value;
-        }
     }
 }
