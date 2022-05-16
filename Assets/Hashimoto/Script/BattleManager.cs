@@ -18,7 +18,8 @@ public class BattleManager : MonoBehaviour
     [Header("得たもの")] public int experienceScore;
     [Header("得たもの")] public int coinScore;
 
-
+    public int enemyDamageTest;
+    public int playerDamageTest;
     private void Awake()
     {
         if (battleInstance == null)

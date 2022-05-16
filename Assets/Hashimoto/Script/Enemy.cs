@@ -5,38 +5,35 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private Player playerScript;
-    string playertag = "Player";
 
-    public int enemyHP = 100;
-
-    public int enemyDamage;
-    public int playerAttack;
+    [Header("敵のHP")]public int enemyHP;
+    [Header("SwordBoxをアタッチ")] public GameObject swordBox;
     void Start()
     {
-        Debug.Log(BattleManager.battleInstance.experience = Random.Range(100,200));
         playerScript = GetComponent<Player>();
+        
+
     }
-    
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.tag == playertag)
-    //    {
-    //        enemyHP -= playerScript.playerAttack;
-    //        print(enemyHP);
-    //    }
-    //}
-    private void OnCollisionEnter(Collision collision)
+    private void Update()
     {
-        if (collision.gameObject.tag == playertag)
+        if (enemyHP <= 0)
         {
-            //enemyHP -= playerScript.playerAttack;
-            enemyHP -= 20;
-            print(enemyHP);
+            BattleManager.battleInstance.experienceScore
+                += BattleManager.battleInstance.experience;
+            BattleManager.battleInstance.coinScore
+                += BattleManager.battleInstance.coin;
+            Debug.Log(BattleManager.battleInstance.experienceScore);
+            Debug.Log(BattleManager.battleInstance.coinScore);
+            Destroy(this.gameObject);
         }
     }
 
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.gameObject == swordBox)
+        {
+            enemyHP = enemyHP - BattleManager.battleInstance.enemyDamageTest;
+            print("残りの敵のHP" + enemyHP);
+        }
     }
 }
