@@ -8,10 +8,9 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private Enemy enemyScript;
     private PS4 _playerActionsAsset;
     private InputAction _move;
-
+    [Header("プレイヤーHP")] public int playerHP;
     private Rigidbody _rb;
     [SerializeField]
     private float _maxSpeed = 5f;
@@ -25,18 +24,12 @@ public class Player : MonoBehaviour
 
     private bool _canMove;
     string enemyTag = "Enemy";
-
-    public GameObject[] enemyfolder;
-
+    string bossTag = "BigBoss";
+    
     public Text expText;
 
     public GameObject sword_Box;
-    [SerializeField] private int eAttack;
 
-    //Enemy enemy = new Enemy();
-
-    //[Header("プレイヤーアタッチ")] public GameObject player;
-    [Header("プレイヤーHP")] public int playerHp;
 
     private void Awake()
     {
@@ -45,8 +38,6 @@ public class Player : MonoBehaviour
         _playerActionsAsset = new PS4();
         _canMove = true;
         _targetRotation = transform.rotation;
-        enemyScript = GetComponent<Enemy>();
-        //eAttack = enemyScript.EAttackScore;
     }
 
     private void OnEnable()
@@ -89,7 +80,7 @@ public class Player : MonoBehaviour
     {
         _animator.SetFloat("speed", _rb.velocity.sqrMagnitude / _maxSpeed);
 
-        if (playerHp <= 0 )
+        if (playerHP <= 0 )
         {
             BattleManager.battleInstance.player.SetActive(false);
             print("GameOver");
@@ -186,25 +177,16 @@ public class Player : MonoBehaviour
     {
         _canMove = !_canMove;
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.tag == enemyTag)
-    //    {
-    //        //Unityの方のTag消しとけ
-    //        playerHp -= enemyScript.enemyAttack;
-    //    }
-    //}
     private void OnCollisionEnter(Collision collision)
     {
-        //eAttack = enemyScript.EAttackScore;
-        
         if (collision.gameObject.tag == enemyTag)
         {
-            //Enemy enemy = new Enemy();
-            //eAttack = enemyScript.EAttackScore;
-            playerHp = playerHp - BattleManager.battleInstance.playerDamageTest;
-            print("残りのプレイヤーのHP" + playerHp);
+            playerHP -= BattleManager.battleInstance.playerAttack;
+            //print("残りのプレイヤーのHP" + BattleManager.battleInstance.playerHP);
+        }
+        if (collision.gameObject.tag == bossTag)
+        {
+            playerHP -= BattleManager.battleInstance.bossAttack;
         }
     }
 
@@ -213,17 +195,4 @@ public class Player : MonoBehaviour
         _animator.SetTrigger("speedUp");
         Debug.Log("a");
     }
-    //public int PAttackScore
-    //{
-    //    get
-    //    {
-    //        return playerAttack;
-    //    }
-    //    private set
-    //    {
-    //        playerAttack = value;
-    //    }
-    //}
-
-    //public int PlayerAttack { get => playerAttack; set => playerAttack = value; }
 }

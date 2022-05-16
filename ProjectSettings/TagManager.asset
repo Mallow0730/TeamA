@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Sword
   - Enemy
+  - BigBoss
   layers:
   - Default
   - TransparentFX

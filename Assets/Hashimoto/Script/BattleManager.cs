@@ -5,9 +5,9 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager battleInstance = null;
-    bool _gameOver = false;
     [Header("プレイヤー設定")]
     [Header("プレイヤーアタッチ")] public GameObject player;
+    [Header("プレイヤーの攻撃力")] public int playerAttack;
     
 
     [Header("得られるもの")]
@@ -18,8 +18,18 @@ public class BattleManager : MonoBehaviour
     [Header("得たもの")] public int experienceScore;
     [Header("得たもの")] public int coinScore;
 
-    public int enemyDamageTest;
-    public int playerDamageTest;
+    [Header("敵設定")]
+    
+    [Header("敵の攻撃力")] public int enemyAttack;
+
+    public GameObject[] enemyFolder;
+    public GameObject boss;
+    
+    [Header("ボスの攻撃力")] public int bossAttack;
+
+    bool isFirstAction = false;
+
+    
     private void Awake()
     {
         if (battleInstance == null)
@@ -34,15 +44,19 @@ public class BattleManager : MonoBehaviour
     }
     void Start()
     {
-        
+        boss.SetActive(false);
     }
 
     void Update()
     {
-        if (player == null)
+        enemyFolder = GameObject.FindGameObjectsWithTag("Enemy");
+        
+        if (!isFirstAction && enemyFolder.Length == 0)
         {
-            _gameOver = true;
-            Debug.Log("GameOver");
+            isFirstAction = true;
+            Debug.Log("ラスボス出現!!");
+            boss.gameObject.SetActive(true);
+            boss = GameObject.FindGameObjectWithTag("BigBoss");
         }
     }
 }

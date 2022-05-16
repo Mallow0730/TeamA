@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private Player playerScript;
 
-    [Header("敵のHP")]public int enemyHP;
     [Header("SwordBoxをアタッチ")] public GameObject swordBox;
+    [Header("敵のHP")] public int enemyHP;
     void Start()
     {
-        playerScript = GetComponent<Player>();
-        
 
     }
     private void Update()
@@ -22,9 +19,10 @@ public class Enemy : MonoBehaviour
                 += BattleManager.battleInstance.experience;
             BattleManager.battleInstance.coinScore
                 += BattleManager.battleInstance.coin;
-            Debug.Log(BattleManager.battleInstance.experienceScore);
-            Debug.Log(BattleManager.battleInstance.coinScore);
-            Destroy(this.gameObject);
+            //Debug.Log(BattleManager.battleInstance.experienceScore);
+            //Debug.Log(BattleManager.battleInstance.coinScore);
+            //Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 
@@ -32,8 +30,8 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject == swordBox)
         {
-            enemyHP = enemyHP - BattleManager.battleInstance.enemyDamageTest;
-            print("残りの敵のHP" + enemyHP);
+            enemyHP -= BattleManager.battleInstance.playerAttack;
+            //print("残りの敵のHP" + BattleManager.battleInstance.enemyHP);
         }
     }
 }
