@@ -8,6 +8,7 @@ public class Boss : MonoBehaviour
 
     [Header("ボスのHP")] public int bossHP;
     public GameObject swordBox;
+    public GameObject footBox;
     void Start()
     {
         
@@ -31,6 +32,11 @@ public class Boss : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == swordBox)
+        {
+            bossHP -= BattleManager.battleInstance.playerAttack;
+            //print("残りの敵のHP" + BattleManager.battleInstance.enemyHP);
+        }
+        if (other.gameObject == footBox)
         {
             bossHP -= BattleManager.battleInstance.playerAttack;
             //print("残りの敵のHP" + BattleManager.battleInstance.enemyHP);

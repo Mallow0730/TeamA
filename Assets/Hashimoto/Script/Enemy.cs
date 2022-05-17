@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
 
     [Header("SwordBoxをアタッチ")] public GameObject swordBox;
+    [Header("FootBoxをアタッチ")] public GameObject footBox;
     [Header("敵のHP")] public int enemyHP;
     void Start()
     {
@@ -29,6 +30,11 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == swordBox)
+        {
+            enemyHP -= BattleManager.battleInstance.playerAttack;
+            //print("残りの敵のHP" + BattleManager.battleInstance.enemyHP);
+        }
+        if (other.gameObject == footBox)
         {
             enemyHP -= BattleManager.battleInstance.playerAttack;
             //print("残りの敵のHP" + BattleManager.battleInstance.enemyHP);
