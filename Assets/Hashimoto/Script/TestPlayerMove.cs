@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class TestPlayerMove : MonoBehaviour
 {
+    
     [SerializeField]
     private PS4 _playerActionsAsset;
     private InputAction _move;
-    [Header("プレイヤーHP")] public int playerHP;
+    //[Header("プレイヤーHP")] public int playerHP;
     private Rigidbody _rb;
     [SerializeField]
     private float _maxSpeed = 5f;
@@ -23,15 +22,9 @@ public class Player : MonoBehaviour
     private Quaternion _targetRotation;
 
     private bool _canMove;
-    string enemyTag = "Enemy";
-    string bossTag = "BigBoss";
-    
-    public Text expText;
-
     public GameObject sword_Box;
-    public GameObject foot_Box;
 
-
+    static readonly int hashAttackType = Animator.StringToHash("AttackType");
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -54,7 +47,7 @@ public class Player : MonoBehaviour
         _playerActionsAsset.Player.Enable();
     }
 
-    
+
 
     private void OnDisable()
     {
@@ -68,22 +61,22 @@ public class Player : MonoBehaviour
         _playerActionsAsset.Player.Disable();
     }
 
-    
+
 
     void Start()
     {
-        
+
     }
 
     void Update()
     {
         _animator.SetFloat("speed", _rb.velocity.sqrMagnitude / _maxSpeed);
 
-        if (playerHP <= 0 )
-        {
-            BattleManager.battleInstance.player.SetActive(false);
-            print("GameOver");
-        }
+        //if (playerHP <= 0)
+        //{
+        //    BattleManager.battleInstance.player.SetActive(false);
+        //    print("GameOver");
+        //}
     }
 
     private void FixedUpdate()
@@ -103,32 +96,35 @@ public class Player : MonoBehaviour
 
         LookAt();
     }
-
+    public int AttackType
+    {
+        get => _animator.GetInteger(hashAttackType);
+        set => _animator.SetInteger(hashAttackType,value);
+    }
 
 
     private void Attack(InputAction.CallbackContext obj)
     {
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
-
-        _animator.SetTrigger("attack");
+        _animator.SetTrigger("Attack");
+        AttackType = 0;
         sword_Box.SetActive(true);
-        StartCoroutine(SwordBoxFalse());
+        StartCoroutine(TimeLag());
     }
-    IEnumerator SwordBoxFalse()
+    IEnumerator TimeLag()
     {
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(3f);
         sword_Box.SetActive(false);
-        foot_Box.SetActive(false);
     }
     private void Attack2(InputAction.CallbackContext obj)
     {
-        foot_Box.SetActive(true);
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
-
-        _animator.SetTrigger("kick");
-
+        AttackType = 1;
+        
+        _animator.SetTrigger("Attack");
+        StartCoroutine(TimeLag());
     }
     private void Jump(InputAction.CallbackContext obj)
     {
@@ -179,15 +175,15 @@ public class Player : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == enemyTag)
-        {
-            playerHP -= BattleManager.battleInstance.playerAttack;
-            //print("残りのプレイヤーのHP" + BattleManager.battleInstance.playerHP);
-        }
-        if (collision.gameObject.tag == bossTag)
-        {
-            playerHP -= BattleManager.battleInstance.bossAttack;
-        }
+        //if (collision.gameObject.tag == enemyTag)
+        //{
+        //    playerHP -= BattleManager.battleInstance.playerAttack;
+        //    //print("残りのプレイヤーのHP" + BattleManager.battleInstance.playerHP);
+        //}
+        //if (collision.gameObject.tag == bossTag)
+        //{
+        //    playerHP -= BattleManager.battleInstance.bossAttack;
+        //}
     }
 
     private void Speed(InputAction.CallbackContext obj)//走るバグ
@@ -195,4 +191,29 @@ public class Player : MonoBehaviour
         _animator.SetTrigger("speedUp");
         Debug.Log("a");
     }
+    
+    /*
+    Animator animator;
+    static readonly int hashAttackType = Animator.StringToHash("AttackType");
+    static readonly int hashForwaed = Animator.StringToHash("speed");
+
+    private void Awake()
+    {
+        TryGetComponent(out animator);
+    }
+    private void Update()
+    {
+        var x = Input.GetAxis("Horizontal");
+        var y = Input.GetAxis("Vertical");
+
+        animator.SetFloat(hashForwaed, y, 0.1f, Time.deltaTime);
+        animator.SetFloat(hashForwaed, x, 0.1f, Time.deltaTime);
+    }
+    public int AttackType
+    {
+        get => animator.GetInteger(hashAttackType);
+        set => animator.SetInteger(hashAttackType,value);
+    }
+    */
 }
+
