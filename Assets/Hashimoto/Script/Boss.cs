@@ -25,6 +25,8 @@ public class Boss : MonoBehaviour
                 += BattleManager.battleInstance.experience * 2;
             PlayerPrefs.SetInt("COINSCORE", BattleManager.battleInstance.coinScore);
             PlayerPrefs.SetInt("EXPSCORE", BattleManager.battleInstance.experienceScore);
+            Debug.Log(BattleManager.battleInstance.coinScore);
+            Debug.Log(BattleManager.battleInstance.experienceScore);
             PlayerPrefs.Save();
             Debug.Log("GameClear");
         }

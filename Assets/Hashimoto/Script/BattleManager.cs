@@ -19,8 +19,9 @@ public class BattleManager : MonoBehaviour
     [Header("得たもの")] public int coinScore;
 
     [Header("敵設定")]
-    
+
     [Header("敵の攻撃力")] public int enemyAttack;
+    [Header("敵のHP")] public int enemyHP;
 
     public GameObject[] enemyFolder;
     public GameObject boss;
