@@ -1,45 +1,45 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopSelect : MonoBehaviour
 {
-    /// <summary>メインカメラ</summary>
-    [SerializeField]
-    [Header("メインカメラ")]
-    Camera _mainCamera;
-
-    /// <summary>サブカメラ</summary>
-    [SerializeField]
-    [Header("サブカメラ")]
-    Camera _subCamera;
-
     /// <summary>武器のショップ画面</summary>
     [SerializeField]
     [Header("武器のショップ画面")]
     Canvas _weaponCanvas;
 
+    /// <summary>装備のショップ画面</summary>
+    [SerializeField]
+    [Header("装備のショップ画面")]
+    Canvas _gearCanvas;
 
+    /// <summary>ショップのパネル</summary>
+    [SerializeField]
+    [Header("ショップのパネル")]
+    Image _shopPanel = null;
 
-    void Awake()
+    private void Awake()
     {
-        //_mainCamera = GetComponent<Camera>();
-        //_subCamera = GetComponent<Camera>();
+       //_shopPanel = GetComponent<Image>();
     }
 
-
-    /// <summary>左の<のButtonを押したらカメラを切り替える</summary>
-    public void LeftSelect()
+    /// <summary>「＞」or「＜」Buttonを押したらカメラを切り替える</summary>
+    public void Select()
     {
-
-        _mainCamera.gameObject.SetActive(false);
-        _subCamera.gameObject.SetActive(true);
-    }
-
-    /// <summary>右の>のButtonを押したらカメラを切り替える</summary>
-    public void Right()
-    {
-        _mainCamera.gameObject.SetActive(true);
-        _subCamera.gameObject.SetActive(false);
+        if(_weaponCanvas.gameObject.activeSelf)//武器屋だったら
+        {
+            _weaponCanvas.gameObject.SetActive(false);
+            _gearCanvas.gameObject.SetActive(true);
+            _shopPanel.color = new Color32(255, 85, 0, 100);           
+        }
+        else//装備屋だったら
+        {
+            
+            _weaponCanvas.gameObject.SetActive(true);
+            _gearCanvas.gameObject.SetActive(false);
+            _shopPanel.color = new Color32(41, 255, 0, 100);
+        }
     }
 }
