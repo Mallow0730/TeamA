@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
         if (playerHP <= 0 )
         {
             BattleManager.battleInstance.player.SetActive(false);
-            print("GameOver");
+            //print("GameOver");
         }
     }
 
