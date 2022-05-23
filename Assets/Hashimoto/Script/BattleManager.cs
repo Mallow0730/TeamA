@@ -7,7 +7,6 @@ public class BattleManager : MonoBehaviour
     public static BattleManager battleInstance = null;
     [Header("プレイヤー設定")]
     [Header("プレイヤーアタッチ")] public GameObject player;
-    [Header("プレイヤーの攻撃力")] public int playerAttack;
     
 
     [Header("得られるもの")]
@@ -55,7 +54,7 @@ public class BattleManager : MonoBehaviour
         {
             isFirstAction = true;
             Debug.Log("ラスボス出現!!");
-            boss.gameObject.SetActive(true);
+            //boss.gameObject.SetActive(true);
             boss = GameObject.FindGameObjectWithTag("BigBoss");
         }
     }

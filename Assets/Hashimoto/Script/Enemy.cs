@@ -80,8 +80,8 @@ public class Enemy : MonoBehaviour
         {
             if (distance > quitRange)
                 tracking = false;
-            _agent.destination = _playerPos;
-            if (_player != null)
+            //_agent.destination = _playerPos;
+            if (_player == null)
             {
                 _sceneManager.FadeOut("GameOverScene");
                 Debug.Log("GameOver");
