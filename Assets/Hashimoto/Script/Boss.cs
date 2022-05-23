@@ -9,6 +9,7 @@ public class Boss : MonoBehaviour
     [Header("ボスのHP")] public int bossHP;
     public GameObject swordBox;
     public GameObject footBox;
+    [SerializeField] Weapon _weapon;
     void Start()
     {
         
@@ -25,20 +26,17 @@ public class Boss : MonoBehaviour
                 += BattleManager.battleInstance.experience * 2;
             PlayerPrefs.SetInt("COINSCORE", BattleManager.battleInstance.coinScore);
             PlayerPrefs.SetInt("EXPSCORE", BattleManager.battleInstance.experienceScore);
+            Debug.Log(BattleManager.battleInstance.coinScore);
+            Debug.Log(BattleManager.battleInstance.experienceScore);
             PlayerPrefs.Save();
             Debug.Log("GameClear");
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == swordBox)
+        if (other.gameObject.tag == "Weapon")
         {
-            bossHP -= BattleManager.battleInstance.playerAttack;
-            //print("残りの敵のHP" + BattleManager.battleInstance.enemyHP);
-        }
-        if (other.gameObject == footBox)
-        {
-            bossHP -= BattleManager.battleInstance.playerAttack;
+            bossHP -= _weapon._attack = 50;
             //print("残りの敵のHP" + BattleManager.battleInstance.enemyHP);
         }
     }

@@ -7,7 +7,6 @@ public class BattleManager : MonoBehaviour
     public static BattleManager battleInstance = null;
     [Header("プレイヤー設定")]
     [Header("プレイヤーアタッチ")] public GameObject player;
-    [Header("プレイヤーの攻撃力")] public int playerAttack;
     
 
     [Header("得られるもの")]
@@ -19,10 +18,10 @@ public class BattleManager : MonoBehaviour
     [Header("得たもの")] public int coinScore;
 
     [Header("敵設定")]
-    
+
     [Header("敵の攻撃力")] public int enemyAttack;
 
-    public GameObject[] enemyFolder;
+    GameObject enemyFolder;
     public GameObject boss;
     
     [Header("ボスの攻撃力")] public int bossAttack;
@@ -45,17 +44,17 @@ public class BattleManager : MonoBehaviour
     void Start()
     {
         boss.SetActive(false);
+        enemyFolder = GameObject.FindGameObjectWithTag("Enemy");
     }
 
     void Update()
     {
-        enemyFolder = GameObject.FindGameObjectsWithTag("Enemy");
         
-        if (!isFirstAction && enemyFolder.Length == 0)
+        if (!isFirstAction && enemyFolder == null)
         {
             isFirstAction = true;
             Debug.Log("ラスボス出現!!");
-            boss.gameObject.SetActive(true);
+            //boss.gameObject.SetActive(true);
             boss = GameObject.FindGameObjectWithTag("BigBoss");
         }
     }
