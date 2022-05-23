@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Sword
   - Enemy
   - BigBoss
-  - Foot
+  - EnemyCircle
+  - Weapon
   layers:
   - Default
   - TransparentFX

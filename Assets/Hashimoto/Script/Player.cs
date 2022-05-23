@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
     public GameObject sword_Box;
     public GameObject foot_Box;
 
-
+    GameObject enemy;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
         _playerActionsAsset = new PS4();
         _canMove = true;
         _targetRotation = transform.rotation;
+        enemy = GameObject.Find("Enemy");
     }
 
     private void OnEnable()
@@ -82,7 +83,7 @@ public class Player : MonoBehaviour
         if (playerHP <= 0 )
         {
             BattleManager.battleInstance.player.SetActive(false);
-            print("GameOver");
+            //print("GameOver");
         }
     }
 
@@ -113,22 +114,22 @@ public class Player : MonoBehaviour
 
         _animator.SetTrigger("attack");
         sword_Box.SetActive(true);
-        StartCoroutine(SwordBoxFalse());
+        StartCoroutine(AttackBoxFalse());
     }
-    IEnumerator SwordBoxFalse()
+    IEnumerator AttackBoxFalse()
     {
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(1f);
         sword_Box.SetActive(false);
         foot_Box.SetActive(false);
+        yield return new WaitForSeconds(1.5f);
     }
     private void Attack2(InputAction.CallbackContext obj)
     {
         foot_Box.SetActive(true);
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
-
         _animator.SetTrigger("kick");
-
+        StartCoroutine(AttackBoxFalse());
     }
     private void Jump(InputAction.CallbackContext obj)
     {
@@ -181,13 +182,30 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == enemyTag)
         {
-            playerHP -= BattleManager.battleInstance.playerAttack;
+            playerHP -= BattleManager.battleInstance.enemyAttack;
+            Debug.Log(playerHP);
             //print("残りのプレイヤーのHP" + BattleManager.battleInstance.playerHP);
         }
         if (collision.gameObject.tag == bossTag)
         {
             playerHP -= BattleManager.battleInstance.bossAttack;
         }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        /*
+        //if (other.gameObject.tag == enemyTag)
+        //{
+        //    playerHP -= BattleManager.battleInstance.enemyAttack;
+        //    Debug.Log(playerHP);
+        //    //print("残りのプレイヤーのHP" + BattleManager.battleInstance.playerHP);
+        //}
+        //if (other.gameObject.tag == bossTag)
+        //{
+        //    playerHP -= BattleManager.battleInstance.bossAttack;
+        //}
+        */
+        
     }
 
     private void Speed(InputAction.CallbackContext obj)//走るバグ
