@@ -39,7 +39,7 @@
 
 | 役職 | 名前 | 作業内容 |
 | ---- | ---- | ---- |
-|ディレクター兼プランナー|[太田佳寿弥](https://github.com/KazuyaOta)|タイトル作成|
+|ディレクター兼プランナー|[太田佳寿弥](https://github.com/KazuyaOta)|タイトル作成, 企画書, 仕様書|
 |プロジェクトマネージャー兼プログラマー|[橋本凛紅](https://github.com/rikuriku0402)|バトル関連|
 |プランナー|[金田柊也](https://github.com/Shuukane1201)|  |
 |プログラマー|[安達青](https://github.com/Mallow0730)|プロジェクト管理, ショップ関連|
