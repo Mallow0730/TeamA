@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponCanvas: {fileID: 288652175}
-  _gearCanvas: {fileID: 757573226}
+  _armorCanvas: {fileID: 757573226}
   _shopPanel: {fileID: 1483451925}
 --- !u!1 &288652172
 GameObject:
@@ -769,7 +769,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Gear
+  m_Text: Armor
 --- !u!222 &400681658
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -996,7 +996,7 @@ GameObject:
   - component: {fileID: 757573228}
   - component: {fileID: 757573227}
   m_Layer: 5
-  m_Name: GearCanvas
+  m_Name: ArmorCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1410,7 +1410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1250157105}
   m_Layer: 5
-  m_Name: Gear
+  m_Name: Armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2203,7 +2203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponCanvas: {fileID: 288652175}
-  _gearCanvas: {fileID: 757573226}
+  _armorCanvas: {fileID: 757573226}
   _shopPanel: {fileID: 1483451925}
 --- !u!1 &2083608818
 GameObject:
