@@ -4,30 +4,50 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    [Header("ボスをアタッチ")]public GameObject boss;
+    /// <summary>ゲット出来るコイン量</summary>
+    public int GetCoin { get => _getCoin; set => _getCoin = value; }
 
-    [Header("ボスのHP")] public int bossHP;
-    public GameObject swordBox;
-    public GameObject footBox;
-    [SerializeField] Weapon _weapon;
+    /// <summary>ゲット出来る経験値量</summary>
+    public int GetExp { get => _getExp; set => _getExp = value; }
+
+    /// <summary>ボスの体力</summary>
+    public int BossHP { get => _bossHP; set => _bossHP = value; }
+
+    /// <summary>ボスの体力</summary>
+    [SerializeField]
+    [Header("ボスのHP")]
+    int _bossHP;
+
+    /// <summary>武器のスクリプト</summary>
+    [SerializeField]
+    [Header("武器のスクリプト")] 
+    Weapon _weapon;
+
+    /// <summary>ゲット出来るコイン量</summary>
+    [SerializeField]
+    [Header("ゲット出来るコイン量")]
+    int _getCoin;
+
+    /// <summary>ゲット出来る経験値量</summary>
+    [SerializeField]
+    [Header("ゲット出来る経験値量")]
+    int _getExp;
+
+
     void Start()
     {
-        
+        _bossHP = 200;
     }
 
     void Update()
     {
-        if (bossHP <= 0)
+        if (BossHP <= 0)
         {
-            boss.SetActive(false);
-            BattleManager.battleInstance.coinScore 
-                += BattleManager.battleInstance.coin * 2;
-            BattleManager.battleInstance.experienceScore
-                += BattleManager.battleInstance.experience * 2;
-            PlayerPrefs.SetInt("COINSCORE", BattleManager.battleInstance.coinScore);
-            PlayerPrefs.SetInt("EXPSCORE", BattleManager.battleInstance.experienceScore);
-            Debug.Log(BattleManager.battleInstance.coinScore);
-            Debug.Log(BattleManager.battleInstance.experienceScore);
+            this.gameObject.SetActive(false);
+            GameManager.instance.Coin += GetCoin;
+            GameManager.instance.Exp += GetExp;
+            PlayerPrefs.SetInt("COINSCORE", GameManager.instance.Coin);
+            PlayerPrefs.SetInt("EXPSCORE", GameManager.instance.Exp);
             PlayerPrefs.Save();
             Debug.Log("GameClear");
         }
@@ -36,7 +56,7 @@ public class Boss : MonoBehaviour
     {
         if (other.gameObject.tag == "Weapon")
         {
-            bossHP -= _weapon._attack = 50;
+            BossHP -= _weapon.Attack = 50;
             //print("残りの敵のHP" + BattleManager.battleInstance.enemyHP);
         }
     }

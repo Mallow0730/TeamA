@@ -2,112 +2,95 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    /// <summary>ゲット出来るコイン量</summary>
+    public int GetCoin { get => _getCoin;}
 
-    //[Header("SwordBoxをアタッチ")] public GameObject swordBox;
-    //[Header("FootBoxをアタッチ")] public GameObject footBox;
-    //string tagname1 = "Sword";
-    //string tagname2 = "Foot";
+    /// <summary>ゲット出来る経験値量</summary>
+    public int GetExp { get => _getExp;}
+
+    /// <summary>UIのスライダー</summary>
+    public Slider Slider { get => _slider;}
+
+    /// <summary>UIのキャンバス</summary>
+    public Canvas Canvas { get => _canvas;}
+
+    /// <summary>敵のアタック</summary>
+    public int Attack { get => _attack;}
+
+    /// <summary>敵の体力</summary>
+    public int EnemyHP { get => _enemyHP; set => _enemyHP = value; }
+
+    /// <summary>武器Script</summary>
+    public Weapon Weapon { get => _weapon;}
+
+    /// <summary>シーンScript</summary>
     [SerializeField] Scenemanager _sceneManager;
-    public Transform[] _points;
-    [SerializeField] int _destPoint;
-    private NavMeshAgent _agent;
 
-    Vector3 _playerPos;
-    GameObject _player;
-    float distance;
-    [SerializeField] float _trackingRange = 3f;
-    [SerializeField] float quitRange = 5f;
-    [SerializeField] bool tracking = false;
+    /// <summary>EnemyのHP</summary>
+    [SerializeField]
+    [Header("敵のHP")]
+    int _enemyHP;
 
-    [Header("敵のHP")] public int enemyHP;
-    [SerializeField] Weapon _weapon;
-    int currentHP;
+    /// <summary>武器のスクリプト</summary>
+    [SerializeField]
+    [Header("武器のスクリプト")] 
+    Weapon _weapon;
 
-    public Slider slider;
-    public Canvas canvas;
+    /// <summary>ゲット出来るコイン量</summary>
+    [SerializeField]
+    [Header("ゲット出来るコイン量")] 
+    int _getCoin;
 
+    /// <summary>ゲット出来る経験値量</summary>
+    [SerializeField]
+    [Header("ゲット出来る経験値量")] 
+    int _getExp;
+
+    /// <summary>UIのスライダー</summary>
+    [SerializeField]
+    [Header("UIのスライダー")] 
+    Slider _slider;
+
+    /// <summary>UIのキャンバス</summary>
+    [SerializeField]
+    [Header("UIのキャンバス")] 
+    Canvas _canvas;
+
+    /// <summary>敵の攻撃力</summary>
+    [SerializeField]
+    [Header("攻撃力")] 
+    int _attack;
 
     void Start()
     {
-        slider.value = 1;
-        _agent = GetComponent<NavMeshAgent>();
-        
-        _agent.autoBraking = false;
-
-        GotoNextPoint();
-
-        _player = GameObject.Find("Player");
-
-        //currentHP = BattleManager.battleInstance.enemyHP;
+        Slider.value = 100;
+        _enemyHP = 100;
     }
-
-    private void GotoNextPoint()
-    {
-        if (_points.Length == 0)
-        {
-            return;
-
-            _agent.destination = _points[_destPoint].position;
-
-            _destPoint = (_destPoint + 1) % _points.Length;
-        }
-    }
-
     private void Update()
     {
-        if (enemyHP <= 0)
+        if (EnemyHP <= 0)
         {
-            BattleManager.battleInstance.experienceScore
-                += BattleManager.battleInstance.experience;
-            BattleManager.battleInstance.coinScore
-                += BattleManager.battleInstance.coin;
-            //debug.log(battlemanager.battleinstance.experiencescore);
-            //debug.log(battlemanager.battleinstance.coinscore);
-            //destroy(this.gameobject);
-            this.gameObject.SetActive(false);
+            GameManager.instance.Coin += GetCoin; 
+            GameManager.instance.Exp += GetExp;
+            PlayerPrefs.SetInt("COINSCORE", GetCoin);
+            PlayerPrefs.SetInt("EXPSCORE", GetExp);
+            PlayerPrefs.Save();
+            Destroy(this.gameObject);
+            //this.gameObject.SetActive(false);
         }
-        canvas.transform.rotation = Camera.main.transform.rotation;
-
-        _playerPos = _player.transform.position;
-        distance = Vector3.Distance(this.transform.position, _playerPos);
-
-        if (tracking)
-        {
-            if (distance > quitRange)
-                tracking = false;
-            //_agent.destination = _playerPos;
-            if (_player == null)
-            {
-                _sceneManager.FadeOut("GameOverScene");
-                Debug.Log("GameOver");
-            }
-        }
-        else
-        {
-            if (distance < _trackingRange)
-                tracking = true;
-
-            if (!_agent.pathPending && _agent.remainingDistance < 0.5f)
-                GotoNextPoint();
-        }
+        Canvas.transform.rotation = Camera.main.transform.rotation;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Weapon")
         {
-            enemyHP -= _weapon._attack = 20;
-            Debug.Log(enemyHP);
+            EnemyHP -= Weapon.Attack;
+            //Debug.Log(EnemyHP);
         }
-        
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        
     }
 }

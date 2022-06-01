@@ -7,16 +7,22 @@ using DG.Tweening;
 
 public class Scenemanager : MonoBehaviour
 {
-    public Image _fadeImage;
+    /// <summary>FadeImage</summary>
+    public Image FadeImage { get => fadeImage;}
 
-    
+    /// <summary>FadeImage</summary>
+    [SerializeField]
+    [Header("FadeImage")]
+    Image fadeImage;
+
+
     public void FadeIn()
     {
-        _fadeImage.transform.DOMoveX(960,1f);
+        FadeImage.transform.DOMoveX(960,1f);
     }
     public void FadeOut(string scene)
     {
-        _fadeImage.transform.DOMoveX(-960, 1f)
+        FadeImage.transform.DOMoveX(-960, 1f)
             .OnComplete(() => SceneManager.LoadScene(scene));
     }
 }
