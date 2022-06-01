@@ -2,36 +2,70 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    /// <summary>Playerの移動速度</summary>
+    public float MaxSpeed => _maxSpeed;
+
+    /// <summary>PlayerのHP</summary>
+    public int PlayerHP { get => _playerHP; set => _playerHP = value; }
+
+    /// <summary>EnemyのScript</summary>
+    public Enemy EnemyScript { get => _enemyScript; set => _enemyScript = value; }
+
+
+    /// <summary>PS4コントローラー</summary>
     [SerializeField]
+    [Header("PS4コントローラー")]
     private PS4 _playerActionsAsset;
-    private InputAction _move;
-    [Header("プレイヤーHP")] public int playerHP;
-    private Rigidbody _rb;
+
+    /// <summary>カメラアングル</summary>
     [SerializeField]
-    private float _maxSpeed = 5f;
-    private Vector3 _forceDirection = Vector3.zero;
-    [SerializeField]
+    [Header("歩くスピード")]
     private Camera _playerCamera;
 
-    private Animator _animator;
-
-    private Quaternion _targetRotation;
-
-    private bool _canMove;
-    string enemyTag = "Enemy";
-    string bossTag = "BigBoss";
     
-    public Text expText;
+    /// <summary>歩くスピード</summary>
+    [SerializeField]
+    [Header("歩くスピード")]
+    float _maxSpeed = 5f;
 
-    public GameObject sword_Box;
-    public GameObject foot_Box;
+    /// <summary>InputAction</summary>
+    InputAction _move;
 
-    GameObject enemy;
+    /// <summary>Rigidbody</summary>
+    Rigidbody _rb;
+
+    /// <summary>Vector3</summary>
+    Vector3 _forceDirection = Vector3.zero;
+
+    /// <summary>アニメーション</summary>
+    Animator _animator;
+
+    /// <summary>視点移動</summary>
+    Quaternion _targetRotation;
+
+    /// <summary>動くかの判別</summary>
+    bool _canMove;
+
+    /// <summary>敵のタグ</summary>
+    string _enemyTag = "Enemy";
+
+    /// <summary>ボスのタグ</summary>
+    string _bossTag = "BigBoss";
+
+    /// <summary>PlayerHP</summary>
+    [SerializeField]
+    [Header("プレイヤーHP")]
+    int _playerHP;
+
+    /// <summary>EnemyScript</summary>
+    [SerializeField] 
+    [Header("EnemyScript")]
+    Enemy _enemyScript;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -39,7 +73,6 @@ public class Player : MonoBehaviour
         _playerActionsAsset = new PS4();
         _canMove = true;
         _targetRotation = transform.rotation;
-        enemy = GameObject.Find("Enemy");
     }
 
     private void OnEnable()
@@ -68,25 +101,20 @@ public class Player : MonoBehaviour
 
         _playerActionsAsset.Player.Disable();
     }
-
-    
-
     void Start()
     {
         
     }
-
     void Update()
     {
-        _animator.SetFloat("speed", _rb.velocity.sqrMagnitude / _maxSpeed);
+        _animator.SetFloat("speed", _rb.velocity.sqrMagnitude / MaxSpeed);
 
-        if (playerHP <= 0 )
+        if (PlayerHP <= 0 )
         {
-            BattleManager.battleInstance.player.SetActive(false);
+            BattleManager.battleInstance.Player.SetActive(false);
             //print("GameOver");
         }
     }
-
     private void FixedUpdate()
     {
         SpeedCheck();
@@ -104,35 +132,23 @@ public class Player : MonoBehaviour
 
         LookAt();
     }
-
-
-
     private void Attack(InputAction.CallbackContext obj)
     {
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
 
         _animator.SetTrigger("attack");
-        sword_Box.SetActive(true);
-        StartCoroutine(AttackBoxFalse());
-    }
-    IEnumerator AttackBoxFalse()
-    {
-        yield return new WaitForSeconds(1f);
-        sword_Box.SetActive(false);
-        foot_Box.SetActive(false);
-        yield return new WaitForSeconds(1.5f);
     }
     private void Attack2(InputAction.CallbackContext obj)
     {
-        foot_Box.SetActive(true);
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
         _animator.SetTrigger("kick");
-        StartCoroutine(AttackBoxFalse());
     }
     private void Jump(InputAction.CallbackContext obj)
     {
+        _rb.velocity = Vector3.zero;
+        _rb.angularVelocity = Vector3.zero;
         _animator.SetTrigger("jump");
     }
 
@@ -154,9 +170,9 @@ public class Player : MonoBehaviour
         Vector3 playerVelocity = _rb.velocity;
         playerVelocity.y = 0;
 
-        if (playerVelocity.sqrMagnitude > _maxSpeed * _maxSpeed)
+        if (playerVelocity.sqrMagnitude > MaxSpeed * MaxSpeed)
         {
-            _rb.velocity = playerVelocity.normalized * _maxSpeed;
+            _rb.velocity = playerVelocity.normalized * MaxSpeed;
         }
     }
     private void LookAt()
@@ -180,15 +196,15 @@ public class Player : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == enemyTag)
+        if (collision.gameObject.tag == _enemyTag)
         {
-            playerHP -= BattleManager.battleInstance.enemyAttack;
-            Debug.Log(playerHP);
+            PlayerHP -= EnemyScript.Attack;
+            Debug.Log(PlayerHP);
             //print("残りのプレイヤーのHP" + BattleManager.battleInstance.playerHP);
         }
-        if (collision.gameObject.tag == bossTag)
+        if (collision.gameObject.tag == _bossTag)
         {
-            playerHP -= BattleManager.battleInstance.bossAttack;
+            PlayerHP -= EnemyScript.Attack;
         }
     }
     private void OnTriggerEnter(Collider other)
