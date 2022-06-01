@@ -4,31 +4,44 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
+    /// <summary>バトルマネージャーのインタンス</summary>
     public static BattleManager battleInstance = null;
+
+    /// <summary>ボスのGameObject</summary>
+    public GameObject Boss { get => _boss; set => _boss = value; }
+
+    /// <summary>プレイヤーのGameObject</summary>
+    public GameObject Player { get => _player; set => _player = value; }
+
+    /// <summary>Enemyの配列</summary>
+    public GameObject[] Enemies { get => _enemies; set => _enemies = value; }
+
+
     [Header("プレイヤー設定")]
-    [Header("プレイヤーアタッチ")] public GameObject player;
-    
 
-    [Header("得られるもの")]
-    [Header("経験値")] public int experience;
-    [Header("コイン")] public int coin;
-
-    [Header("得たもの")]
-    [Header("得たもの")] public int experienceScore;
-    [Header("得たもの")] public int coinScore;
+    /// <summary>プレイヤーのGameObject</summary>
+    [SerializeField]
+    [Header("プレイヤーのGameObject")]
+    GameObject _player;
 
     [Header("敵設定")]
 
-    [Header("敵の攻撃力")] public int enemyAttack;
+    /// <summary>Enemy配列</summary>
+    [SerializeField]
+    [Header("Enemyの配列")]
+    GameObject[] _enemies;
 
-    GameObject enemyFolder;
-    public GameObject boss;
-    
-    [Header("ボスの攻撃力")] public int bossAttack;
+    List<GameObject> _e = new List<GameObject>();//EnemyList
 
+    /// <summary>ボスのGameObject</summary>
+    [SerializeField]
+    [Header("ボスのGameObject")]
+    GameObject _boss;
+
+    /// <summary>一回だけの行動</summary>
     bool isFirstAction = false;
 
-    
+
     private void Awake()
     {
         if (battleInstance == null)
@@ -43,19 +56,28 @@ public class BattleManager : MonoBehaviour
     }
     void Start()
     {
-        boss.SetActive(false);
-        enemyFolder = GameObject.FindGameObjectWithTag("Enemy");
+        //Boss = GameObject.FindGameObjectWithTag("BigBoss");
+        Boss.SetActive(false);
+        //Enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        //_player = GameObject.Find("Player");
+        //var a = GameObject.FindWithTag("Enemy");
+        //_e.Add(a);
+        //_e.Remove(a);
+        //_e.Clear();
+        //_e.ForEach(x => x.transform.position = new Vector3(0,0,0));
+        //foreach (var b in _e)
+        //{
+        //    b.transform.position = new Vector3(0,0,0);
+        //}
     }
 
     void Update()
     {
-        
-        if (!isFirstAction && enemyFolder == null)
+        Debug.Log(Enemies.Length);
+        if (Enemies.Length == 0)
         {
-            isFirstAction = true;
             Debug.Log("ラスボス出現!!");
-            //boss.gameObject.SetActive(true);
-            boss = GameObject.FindGameObjectWithTag("BigBoss");
+            Boss.SetActive(true);
         }
     }
 }
