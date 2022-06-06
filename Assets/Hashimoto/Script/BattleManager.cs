@@ -14,7 +14,7 @@ public class BattleManager : MonoBehaviour
     public GameObject Player { get => _player; set => _player = value; }
 
     /// <summary>Enemyの配列</summary>
-    public GameObject[] Enemies { get => _enemies; set => _enemies = value; }
+    //public GameObject[] Enemies { get => _enemies; set => _enemies = value; }
 
 
     [Header("プレイヤー設定")]
@@ -24,7 +24,7 @@ public class BattleManager : MonoBehaviour
     [Header("プレイヤーのGameObject")]
     GameObject _player;
 
-    [Header("敵設定")]
+    //[Header("敵設定")]
 
     /// <summary>Enemy配列</summary>
     [SerializeField]
@@ -73,8 +73,8 @@ public class BattleManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(Enemies.Length);
-        if (Enemies.Length == 0)
+        Debug.Log(_enemies.Length);
+        if (_enemies.Length == 0)
         {
             Debug.Log("ラスボス出現!!");
             Boss.SetActive(true);
