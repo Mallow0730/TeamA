@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,10 +6,10 @@ using UnityEngine.UI;
 public class Enemy : MonoBehaviour
 {
     /// <summary>ゲット出来るコイン量</summary>
-    public int GetCoin { get => _getCoin;}
+    public int GetCoin { get => _getCoin; set => _getCoin = value; }
 
     /// <summary>ゲット出来る経験値量</summary>
-    public int GetExp { get => _getExp;}
+    public int GetExp { get => _getExp; set => _getExp = value; }
 
     /// <summary>UIのスライダー</summary>
     public Slider Slider { get => _slider;}
@@ -72,16 +71,7 @@ public class Enemy : MonoBehaviour
     }
     private void Update()
     {
-        if (EnemyHP <= 0)
-        {
-            GameManager.instance.Coin += GetCoin; 
-            GameManager.instance.Exp += GetExp;
-            PlayerPrefs.SetInt("COINSCORE", GetCoin);
-            PlayerPrefs.SetInt("EXPSCORE", GetExp);
-            PlayerPrefs.Save();
-            Destroy(this.gameObject);
-            //this.gameObject.SetActive(false);
-        }
+        
         Canvas.transform.rotation = Camera.main.transform.rotation;
     }
 
@@ -89,8 +79,23 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.tag == "Weapon")
         {
-            EnemyHP -= Weapon.Attack;
-            //Debug.Log(EnemyHP);
+            EnemyKill();
+        }
+    }
+    public void EnemyKill()
+    {
+        EnemyHP -= Weapon.Attack;
+        if (EnemyHP <= 0)
+        {
+            GetCoin = Random.Range(1, 10);
+            GetExp = Random.Range(20, 50);
+            GameManager.instance.Coin += GetCoin;
+            GameManager.instance.Exp += GetExp;
+            PlayerPrefs.SetInt("COINSCORE", GameManager.instance.Coin);
+            PlayerPrefs.SetInt("EXPSCORE", GameManager.instance.Exp);
+            PlayerPrefs.Save();
+            Destroy(this.gameObject);
+            //this.gameObject.SetActive(false);
         }
     }
 }

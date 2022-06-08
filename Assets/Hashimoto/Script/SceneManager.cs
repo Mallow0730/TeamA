@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class Scenemanager : MonoBehaviour
+public class Scenemanager : SingletonMonoBehaviour<Scenemanager>
 {
     /// <summary>FadeImage</summary>
     public Image FadeImage { get => fadeImage;}
