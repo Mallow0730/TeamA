@@ -7,6 +7,14 @@ using UnityEngine.UI;
 
 public class ShopButton : MonoBehaviour
 {
+    [SerializeField]
+    [Header("商品名")]
+    string _gearName;
+
+    [SerializeField]
+    [Header("値段")]
+    int _price;
+
     /// <summary>買うか買わないか確認するパネル</summary>
     [SerializeField]
     [Header("アイテムを買うか買わないか確認するパネル")]
@@ -35,9 +43,10 @@ public class ShopButton : MonoBehaviour
 
     public void Buy()
     {
-        if(false/*所持金 >= _price */)
+        if(PlayerPrefs.GetInt("COINSCORE") >= _price)
         {
             //お金を減らす処理をかく(所持金 - price)
+            PlayerPrefs.SetInt("COINSCORE" ,-_price);
             Debug.Log("を買いました");
         }
         else
