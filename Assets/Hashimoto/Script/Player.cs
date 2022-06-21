@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     /// <summary>EnemyのScript</summary>
     public Enemy EnemyScript { get => _enemyScript; set => _enemyScript = value; }
 
+    /// <summary>武器</summary>
+    //public GameObject Sword { get => _sword; set => _sword = value; }
+
 
     /// <summary>PS4コントローラー</summary>
     [SerializeField]
@@ -66,6 +69,13 @@ public class Player : MonoBehaviour
     [Header("EnemyScript")]
     Enemy _enemyScript;
 
+    ///// <summary>武器</summary>
+    //[SerializeField]
+    //[Header("武器")]
+    //GameObject _sword;
+
+    public List<GameObject> a = new List<GameObject>();
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -103,16 +113,18 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
-        
     }
     void Update()
     {
         _animator.SetFloat("speed", _rb.velocity.sqrMagnitude / MaxSpeed);
-
-        if (PlayerHP <= 0 )
+        PlayerKill();
+    }
+    public void PlayerKill()
+    {
+        if (PlayerHP <= 0)
         {
             BattleManager.battleInstance.Player.SetActive(false);
-            //print("GameOver");
+            //ゲームオーバーシーンに飛ぶ
         }
     }
     private void FixedUpdate()
@@ -134,13 +146,14 @@ public class Player : MonoBehaviour
     }
     private void Attack(InputAction.CallbackContext obj)
     {
+        a[0].SetActive(true);
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
-
         _animator.SetTrigger("attack");
     }
     private void Attack2(InputAction.CallbackContext obj)
     {
+        a[1].SetActive(true);
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
         _animator.SetTrigger("kick");
@@ -229,4 +242,5 @@ public class Player : MonoBehaviour
         _animator.SetTrigger("speedUp");
         Debug.Log("a");
     }
+    public void WeaponFalse() => a.ForEach(x => x.gameObject.SetActive(false));
 }

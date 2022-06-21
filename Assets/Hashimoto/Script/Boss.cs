@@ -38,25 +38,26 @@ public class Boss : MonoBehaviour
     {
         _bossHP = 200;
     }
-
-    void Update()
+    public void BossKill()
     {
+        BossHP -= _weapon.Attack = 50;
         if (BossHP <= 0)
         {
-            this.gameObject.SetActive(false);
+            GetCoin = Random.Range(1, 10);
+            GetExp = Random.Range(20, 50);
             GameManager.instance.Coin += GetCoin;
             GameManager.instance.Exp += GetExp;
             PlayerPrefs.SetInt("COINSCORE", GameManager.instance.Coin);
             PlayerPrefs.SetInt("EXPSCORE", GameManager.instance.Exp);
             PlayerPrefs.Save();
-            Debug.Log("GameClear");
+            Destroy(this.gameObject);
         }
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Weapon")
         {
-            BossHP -= _weapon.Attack = 50;
+            BossKill();
             //print("残りの敵のHP" + BattleManager.battleInstance.enemyHP);
         }
     }
