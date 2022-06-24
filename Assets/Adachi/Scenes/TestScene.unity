@@ -1255,11 +1255,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 175e636aba8d28942a7c687d6ff41a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moneyText: {fileID: 0}
+  _shopNameText: {fileID: 0}
   _menuButton:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   _displayPanel: {fileID: 0}
+  _ItemDescriptionPanel: {fileID: 0}
 --- !u!4 &499792259
 Transform:
   m_ObjectHideFlags: 0
@@ -1966,7 +1969,7 @@ GameObject:
   - component: {fileID: 1015487579}
   - component: {fileID: 1015487578}
   m_Layer: 5
-  m_Name: PossessionText
+  m_Name: MoneyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

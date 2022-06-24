@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    public void Active()
+    public void SetActiveTrue()
     {
         gameObject.SetActive(true);
     }
 
-    public void DontActive()
+    public void SetActiveFalse()
     {
         gameObject.SetActive(false);
     }
