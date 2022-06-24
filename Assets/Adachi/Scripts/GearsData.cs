@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[CreateAssetMenu(fileName = "ArmorData")]
-public class ArmorsData : ScriptableObject
+[CreateAssetMenu(fileName = "GearData")]
+public class GearsData : ScriptableObject
 {
-    public ArmorData[] Data => _data;
+    public GearData[] Data => _data;
 
     [SerializeField]
-    ArmorData[] _data;
+    GearData[] _data;
 
     [Serializable]
-    public class ArmorData
+    public class GearData
     {
         public int Price => _price;
 
         [SerializeField]
-        string _armorName;
+        string _GearName;
 
         [SerializeField]
         int _price;
