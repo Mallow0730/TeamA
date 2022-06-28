@@ -23,18 +23,11 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
 
     [SerializeField]
     [Header("アイテム説明のパネル")]
-    Image _ItemDescriptionPanel;
-
-    
+    Image _itemDescriptionPanel;
 
     void Start()
     {
         _shopNameText.text = 0.ToString();
-    }
-
-    void Update()
-    {
-           
     }
 
     /// <summary>ショップメニューを表示</summary>
@@ -46,16 +39,10 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
         _displayPanel.gameObject.SetActive(true);
     }
 
-    /// <summary>ボタンを押すと次のウィンドウを表示する際に今のボタンを非表示にする</summary>
-    public void NextWindow(List<Button> deleteButtons)
+    /// <summary>ボタンを押すと今のボタンを非表示にし、次のウィンドウを表示する</summary>
+    public void NextWindow(List<Button> deleteButtons,List<Button> displayButtons)
     {
         deleteButtons.ForEach(button => { button.gameObject.SetActive(false); });//ボタンを非表示
+        displayButtons.ForEach(button => { button.gameObject.SetActive(true); });//ボタンを表示
     }
-
-    public void Back()
-    {
-
-    }
-
-
 }

@@ -25,6 +25,11 @@ public class ShopButton : MonoBehaviour
     [Header("パネルの後ろにある全ボタン")]
     List<Button> _deleteButtons = new List<Button>();
 
+    private void Start()
+    {
+        //ShopUIManager.Instance.NextWindow(_deleteButtons,);
+    }
+
     //ボタンを押したらパネルを表示する
     public void Click()
     {
