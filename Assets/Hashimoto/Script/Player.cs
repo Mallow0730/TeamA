@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     public int PlayerHP { get => _playerHP; set => _playerHP = value; }
 
     /// <summary>EnemyのScript</summary>
-    public Enemy EnemyScript { get => _enemyScript; set => _enemyScript = value; }
+    public EnemyBase EnemyScript { get => _enemyScript; set => _enemyScript = value; }
 
     /// <summary>武器</summary>
     //public GameObject Sword { get => _sword; set => _sword = value; }
@@ -67,7 +67,10 @@ public class Player : MonoBehaviour
     /// <summary>EnemyScript</summary>
     [SerializeField] 
     [Header("EnemyScript")]
-    Enemy _enemyScript;
+    EnemyBase _enemyScript;
+
+    [SerializeField]
+    string _sceneName;
 
     ///// <summary>武器</summary>
     //[SerializeField]
@@ -111,9 +114,6 @@ public class Player : MonoBehaviour
 
         _playerActionsAsset.Player.Disable();
     }
-    void Start()
-    {
-    }
     void Update()
     {
         _animator.SetFloat("speed", _rb.velocity.sqrMagnitude / MaxSpeed);
@@ -124,6 +124,7 @@ public class Player : MonoBehaviour
         if (PlayerHP <= 0)
         {
             BattleManager.battleInstance.Player.SetActive(false);
+            Scenemanager.Instance.FadeOut(_sceneName);
             //ゲームオーバーシーンに飛ぶ
         }
     }
