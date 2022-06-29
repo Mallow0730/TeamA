@@ -5,12 +5,6 @@ using UnityEngine.UI;
 
 public class EnemyBase : MonoBehaviour
 {
-    /// <summary>ゲット出来るコイン量</summary>
-    public int GetCoin => _getCoin;
-
-    /// <summary>ゲット出来る経験値量</summary>
-    public int GetExp => _getExp;
-
     /// <summary>UIのスライダー</summary>
     public Slider Slider => _slider;
 
@@ -33,17 +27,6 @@ public class EnemyBase : MonoBehaviour
 
     /// <summary>現在の体力</summary>
     int _currentHP;
-
-
-    /// <summary>ゲット出来るコイン量</summary>
-    [SerializeField]
-    [Header("ゲット出来るコイン量")] 
-    int _getCoin;
-
-    /// <summary>ゲット出来る経験値量</summary>
-    [SerializeField]
-    [Header("ゲット出来る経験値量")] 
-    int _getExp;
 
     /// <summary>UIのスライダー</summary>
     [SerializeField]
@@ -86,10 +69,6 @@ public class EnemyBase : MonoBehaviour
         Slider.value = EnemyHP;
         if (EnemyHP <= 0)
         {
-            _getCoin = Random.Range(1, 10);
-            _getExp = Random.Range(20, 50);
-            PlayerPrefs.SetInt("COINSCORE", +GetCoin);
-            PlayerPrefs.SetInt("EXPSCORE", +GetExp);
             Destroy(this.gameObject);
             //this.gameObject.SetActive(false);
         }

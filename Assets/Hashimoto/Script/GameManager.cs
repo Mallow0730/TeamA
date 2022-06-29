@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
-    public static GameManager instance = null;
 
     /// <summary>コインの合計値</summary>
     public int Coin => _coin;//コインの合計値
@@ -24,12 +23,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     void Start()
     {
         
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
         _coin = PlayerPrefs.GetInt("COINSCORE");
         _exp =  PlayerPrefs.GetInt("EXPSCORE");
         Debug.Log(Coin);
         Debug.Log(Exp);
     }
-    public int GetCoin(int coin) => _coin = coin;
-    public int GetExp(int exp) => _exp = exp;
 }
