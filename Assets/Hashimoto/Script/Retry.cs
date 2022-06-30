@@ -7,6 +7,10 @@ public class Retry : MonoBehaviour
 {
     public void retry()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
+    }
+    public void startscene()
+    {
+        SceneManager.LoadScene(1);
     }
 }
