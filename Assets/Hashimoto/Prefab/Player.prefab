@@ -1172,7 +1172,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4939721341062402430}
   - component: {fileID: 4939721341062402429}
-  - component: {fileID: 4939721341062402428}
   m_Layer: 0
   m_Name: Foot_Box
   m_TagString: Weapon
@@ -1208,19 +1207,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.19
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4939721341062402428
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4939721341062402431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9091ecfaf22df749bac5bf9e8b096cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attack: 30
 --- !u!1 &4939721341370990269
 GameObject:
   m_ObjectHideFlags: 0
@@ -2684,7 +2670,8 @@ MonoBehaviour:
   _maxSpeed: 5
   _playerHP: 100
   _enemyScript: {fileID: 0}
-  _sword: {fileID: 4939721340017736462}
+  _sceneName: 
+  a: []
 --- !u!95 &9105318028235545401
 Animator:
   serializedVersion: 3
@@ -2837,14 +2824,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1388041452678779028, guid: 75e8ef32258ce794ca9faa4751de6186, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 75e8ef32258ce794ca9faa4751de6186, type: 3}
---- !u!1 &4939721340017736462 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1388041452678779025, guid: 75e8ef32258ce794ca9faa4751de6186,
-    type: 3}
-  m_PrefabInstance: {fileID: 6327058554956278687}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4939721340017736461 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1388041452678779026, guid: 75e8ef32258ce794ca9faa4751de6186,

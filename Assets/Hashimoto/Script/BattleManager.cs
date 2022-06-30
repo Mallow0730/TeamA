@@ -52,6 +52,10 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     {
         if (Boss == false)
         {
+            PlayerPrefs.Save();
+            Debug.Log(PlayerPrefs.GetInt("COINSCORE"));
+            Debug.Log(PlayerPrefs.GetInt("EXPSCORE"));
+            //テストしてないからテストプレイよろ
             Debug.Log("GameClear");
             //クリアシーンに飛ぶ
         }
