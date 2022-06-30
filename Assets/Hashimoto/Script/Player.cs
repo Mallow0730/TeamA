@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
         if (PlayerHP <= 0)
         {
             BattleManager.battleInstance.Player.SetActive(false);
-            Scenemanager.Instance.FadeOut(_sceneName);
+            //Scenemanager.Instance.FadeOut(_sceneName);
             //ゲームオーバーシーンに飛ぶ
         }
     }
