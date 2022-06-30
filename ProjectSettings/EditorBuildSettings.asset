@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Hashimoto/Scene/BattleScene.unity
     guid: 50e5fc70e10ff4748ba0e803d46cda30
-  - enabled: 1
+  - enabled: 0
     path: Assets/Hashimoto/Scene/GameOverScene.unity
     guid: e055c2ba685e5254d9bf1ca861cc07d4
   m_configObjects: {}
