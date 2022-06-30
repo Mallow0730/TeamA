@@ -43,11 +43,16 @@ public class EnemyBase : MonoBehaviour
     [Header("武器の攻撃力")] 
     int _attack;
 
+    [Header("アニメーション")]
+    Animator _aniamtor;
+
+
     protected virtual void Start()
     {
         Slider.maxValue = EnemyHP;
         Slider.value = EnemyHP;
         _currentHP = _enemyHP;
+        _aniamtor = GetComponent<Animator>();
         WeaponManager.Instance.WeaponAttack(_attack);
     }
     protected virtual void Update()
@@ -61,6 +66,7 @@ public class EnemyBase : MonoBehaviour
         if (other.gameObject.tag == "Weapon")
         {
             EnemyDamege();
+            _aniamtor.SetTrigger("Attack");
         }
     }
     protected virtual void EnemyDamege()
