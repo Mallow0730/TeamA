@@ -32,19 +32,13 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
     }
 
     /// <summary>ショップメニューを表示</summary>
-    public void DisplayMenu(UIType uiType)
+    public void NextMenu(UIType uiType)
     {
         _moneyText.gameObject.SetActive(true);
         _shopNameText.gameObject.SetActive(true);
         _allButtons.Where(x => x.UiType == uiType).ToList().ForEach(x => x.SetActive(true));
         _displayPanel.gameObject.SetActive(true);
-    }
-
-    /// <summary>ボタンを押すと今のボタンを非表示にし、次のウィンドウを表示する</summary>
-    public void NextMenu(List<Button> deleteButtons,List<Button> displayButtons)
-    {
-        deleteButtons.ForEach(button => { button.gameObject.SetActive(false); });//ボタンを非表示
-        displayButtons.ForEach(button => { button.gameObject.SetActive(true); });//ボタンを表示
+        _allButtons.Where(x => x.UiType == uiType--).ToList().ForEach(x => x.SetActive(false));
     }
 
     [System.Serializable]
