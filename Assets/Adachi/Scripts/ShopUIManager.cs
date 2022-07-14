@@ -15,12 +15,12 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
     Text _moneyText;
 
     [SerializeField]
-    [Header("ショップの名前のテキスト")]
-    Text _shopNameText;
+    [Header("ブースの名前のテキスト")]
+    Text _boothNameText;
 
     [SerializeField]
-    [Header("左下に表示するパネル")]
-    Image _displayPanel;
+    [Header("左下の説明パネル")]
+    Image _explainPanel;
 
     [SerializeField]
     [Header("アイテム説明のパネル")]
@@ -28,23 +28,29 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
 
     void Start()
     {
-        _shopNameText.text = 0.ToString();
+        _moneyText.text = 0.ToString();
+        _moneyText.gameObject.SetActive(true);
+        _boothNameText.gameObject.SetActive(true);
     }
 
     /// <summary>ショップメニューを表示</summary>
-    public void NextMenu(UIType uiType)
-    {
-        _moneyText.gameObject.SetActive(true);
-        _shopNameText.gameObject.SetActive(true);
-        _allButtons.Where(x => x.UiType == uiType).ToList().ForEach(x => x.SetActive(true));
-        _displayPanel.gameObject.SetActive(true);
+    public void NextMenu(BoothType boothType, UIType uiType)
+    {           
+        _allButtons.Where(x => x.BoothType == boothType && x.UiType == uiType).ToList().ForEach(x => x.SetActive(true));
         _allButtons.Where(x => x.UiType == uiType--).ToList().ForEach(x => x.SetActive(false));
+    }
+
+    /// <summary>戻る</summary>
+    public void BackMenu(BoothType boothType, UIType uiType)
+    {      
+        _allButtons.Where(x => x.BoothType == boothType && x.UiType == uiType).ToList().ForEach(x => x.SetActive(true));
+        _allButtons.Where(x => x.UiType == uiType++).ToList().ForEach(x => x.SetActive(false));
     }
 
     [System.Serializable]
     public class AllButton
     {
-        public string Name => _name;
+        public BoothType BoothType => _boothType;
         public UIType UiType => _uiType;
         public Button Button => _button;
 
@@ -53,7 +59,11 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
         string _name;
 
         [SerializeField]
-        [Header("UIの位置関係の種類")]
+        [Header("店の種類")]
+        BoothType _boothType;
+
+        [SerializeField]
+        [Header("UIの位置の種類")]
         UIType _uiType;
 
         [SerializeField]
@@ -65,6 +75,13 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
             _button.gameObject.SetActive(set);
         }
     }
+}
+public enum BoothType
+{
+    Home,
+    ShopSelect,
+    ShopBuy,
+    ShopSell
 }
 public enum UIType
 {
