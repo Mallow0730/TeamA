@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class BattleManager : SingletonMonoBehaviour<BattleManager>
 {
@@ -8,14 +9,11 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     public static BattleManager battleInstance = null;
 
     /// <summary>プレイヤーのGameObject</summary>
-    public GameObject Player { get => _player; set => _player = value; }
+    public GameObject Player => _player;
 
-    /// <summary>ボス</summary>
-    public GameObject Boss { get => _boss; set => _boss = value; }
+    public List <GameObject> AllEnemys => _allEnemys;
 
-    /// <summary>ボスタグ</summary>
-    public string BossName { get => _bossName; set => _bossName = value; }
-
+    public string EnemyTag => _enemyTag;
 
     [Header("プレイヤー設定")]
 
@@ -24,40 +22,24 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
     [Header("プレイヤーのGameObject")]
     GameObject _player;
 
-    /// <summary>ボス</summary>
-    GameObject _boss;
+    [SerializeField]
+    string _enemyTag = "Enemy";
 
-    /// <summary>ボスタグ</summary>
-    string _bossName = "BigBoss";
+    List <GameObject> _allEnemys = new List<GameObject>();
 
-
-    private void Awake()
+    private void Start()
     {
-        if (battleInstance == null)
-        {
-            battleInstance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        _allEnemys = GameObject.FindGameObjectsWithTag(EnemyTag).ToList();
+        print(_allEnemys.Count);
     }
-    void Start()
+    public void EnemyRemove(GameObject enemy)
     {
-        Boss = GameObject.FindGameObjectWithTag(BossName);
-    }
+        _allEnemys.Remove(enemy);
+        print(_allEnemys.Count);
 
-    void Update()
-    {
-        if (Boss == false)
+        if (_allEnemys.Count <= 0)
         {
-            PlayerPrefs.Save();
-            Debug.Log(PlayerPrefs.GetInt("COINSCORE"));
-            Debug.Log(PlayerPrefs.GetInt("EXPSCORE"));
-            //テストしてないからテストプレイよろ
-            Debug.Log("GameClear");
-            //クリアシーンに飛ぶ
+            print("GameClear");
         }
     }
 }

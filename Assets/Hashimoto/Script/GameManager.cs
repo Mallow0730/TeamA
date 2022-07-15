@@ -19,14 +19,4 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     /// <summary>経験値の合計値</summary>
     [Header("経験値の合計値")]
     int _exp;
-    
-    void Start()
-    {
-        
-        //PlayerPrefs.DeleteAll();
-        _coin = PlayerPrefs.GetInt("COINSCORE");
-        _exp =  PlayerPrefs.GetInt("EXPSCORE");
-        Debug.Log(Coin);
-        Debug.Log(Exp);
-    }
 }

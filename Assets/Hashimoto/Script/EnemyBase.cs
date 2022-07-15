@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -10,9 +11,6 @@ public class EnemyBase : MonoBehaviour
 
     /// <summary>UIのキャンバス</summary>
     public Canvas Canvas => _canvas;
-
-    /// <summary>武器の攻撃力</summary>
-    public int Attack => _attack;
 
     /// <summary>敵の体力</summary>
     public int EnemyHP => _enemyHP;
@@ -24,9 +22,6 @@ public class EnemyBase : MonoBehaviour
     [SerializeField]
     [Header("敵のHP")]
     int _enemyHP;
-
-    /// <summary>現在の体力</summary>
-    int _currentHP;
 
     /// <summary>UIのスライダー</summary>
     [SerializeField]
@@ -43,8 +38,8 @@ public class EnemyBase : MonoBehaviour
     [Header("武器の攻撃力")] 
     int _attack;
 
-    [Header("アニメーション")]
-    Animator _aniamtor;
+    /// <summary>現在の体力</summary>
+    int _currentHP;
 
 
     protected virtual void Start()
@@ -52,31 +47,26 @@ public class EnemyBase : MonoBehaviour
         Slider.maxValue = EnemyHP;
         Slider.value = EnemyHP;
         _currentHP = _enemyHP;
-        _aniamtor = GetComponent<Animator>();
-        WeaponManager.Instance.WeaponAttack(_attack);
     }
-    protected virtual void Update()
-    {
-        
-        Canvas.transform.rotation = Camera.main.transform.rotation;
-    }
+
+    protected virtual void Update() => Canvas.transform.rotation = Camera.main.transform.rotation;
 
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Weapon")
         {
             EnemyDamege();
-            _aniamtor.SetTrigger("Attack");
         }
     }
+
     protected virtual void EnemyDamege()
     {
-        _enemyHP -= Attack;
+        _enemyHP -= WeaponManager.Instance.AllAttacks.First(x => x.WeaponName == "刀").Attack ;
         Slider.value = EnemyHP;
         if (EnemyHP <= 0)
         {
-            Destroy(this.gameObject);
-            //this.gameObject.SetActive(false);
+            BattleManager.Instance.EnemyRemove(gameObject);
+            Destroy(gameObject);
         }
     }
 }
