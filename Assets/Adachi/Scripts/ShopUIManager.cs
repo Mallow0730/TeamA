@@ -6,12 +6,9 @@ using System.Linq;
 
 public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
 {
-    public BoothType NowBoothType => _nowBoothType;
-    public UIType NowUIType => _nowUIType;
-
     [SerializeField]
     [Header("全てのUI")]
-    List<AllUI> _allUIs = new List<AllUI>();
+    List<AllUI> _allUI = new List<AllUI>();
 
     [SerializeField]
     [Header("所持金のテキスト")]
@@ -22,6 +19,10 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
     Text _boothNameText;
 
     [SerializeField]
+    [Header("左下の説明テキスト")]
+    Text _explainText;
+
+    [SerializeField]
     [Header("左下の説明パネル")]
     Image _explainPanel;
 
@@ -29,44 +30,61 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
     [Header("アイテム説明のパネル")]
     Image _itemDescriptionPanel;
 
-    BoothType _nowBoothType = BoothType.Home;
-    UIType _nowUIType = UIType.Select0;
-    const int ONE = 1;
+    [SerializeField]
+    [Header("買えるアイテム")]
+    ItemsData _items;
 
+    Stack<BoothType> _boothTypes = new Stack<BoothType>();
+    const int ONE = 1;
     void Start() 
     {
+        _explainText.text = _allUI.First(x => x.BoothType == BoothType.Home).Message;
+        _boothNameText.text = _allUI.First(x => x.BoothType == BoothType.Home).BoothName;
         _moneyText.text = 0.ToString();
         _moneyText.gameObject.SetActive(true);
-        _boothNameText.gameObject.SetActive(true);
+        _boothTypes.Push(BoothType.Home);
     }
 
     /// <summary>ショップメニューを表示</summary>
-    public void NextMenu(BoothType boothType, UIType uiType)
-    {       
+    public void NextMenu(BoothType boothType)
+    {
         //次のUIを表示する
-        _allUIs.Where(x => x.BoothType == boothType && x.UiType == uiType).ToList().ForEach(x => x.SetActive(true));
+        _allUI.First(x => x.BoothType == boothType).SetActive(true);
         //前のUIを非表示する
-        _allUIs.Where(x => x.UiType == uiType - ONE).ToList().ForEach(x => x.SetActive(false));
-        //現在の状態を保存
-        _nowBoothType = boothType;
-        _nowUIType = uiType;
+        _allUI.First(x => x.BoothType == _boothTypes.Peek()).SetActive(false);
+        //現在の状態(移動した後の)を保存
+        _boothTypes.Push(boothType);
+        //テキストを変更
+        _explainText.text = _allUI.First(x => x.BoothType == boothType).Message;
+        _boothNameText.text = _allUI.First(x => x.BoothType == boothType).BoothName;
     }
 
     /// <summary>戻る</summary>
     public void BackMenu()
     {
         //今のUIを非表示する
-        _allUIs.Where(x => x.BoothType == _nowBoothType && x.UiType == _nowUIType).ToList().ForEach(x => x.SetActive(false));
-        if (_nowBoothType == BoothType.ShopSell) _nowBoothType = BoothType.ShopBuy;
-        //次のUIを表示
-        _allUIs.Where(x => x.BoothType == _nowBoothType - ONE && x.UiType == _nowUIType - ONE).ToList().ForEach(x => x.SetActive(true));
+        _allUI.First(x => x.BoothType == _boothTypes.Peek()).SetActive(false);
+        //今のUIの要素も消す
+        if(_boothTypes.Peek() != BoothType.Home)_boothTypes.Pop();
+        //古いUIを表示
+        _allUI.First(x => x.BoothType == _boothTypes.Peek()).SetActive(true);
+        //テキストを変更
+        _explainText.text = _allUI.First(x => x.BoothType == _boothTypes.Peek()).Message;
+        _boothNameText.text = _allUI.First(x => x.BoothType == _boothTypes.Peek()).BoothName;
     }
+
+    public void ShopBuy(Text text)
+    {
+        text.text = _items.Data[0].Price.ToString();
+    }
+
 
     [System.Serializable]
     public class AllUI
     {
         public BoothType BoothType => _boothType;
-        public UIType UiType => _uiType;
+        public string BoothName => _boothName;
+        public string Message => _message;
         public GameObject UI => _ui;
 
         [SerializeField]
@@ -74,12 +92,16 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
         string _name;
 
         [SerializeField]
-        [Tooltip("店の種類")]
-        BoothType _boothType;
+        [Tooltip("表示したい店の名前")]
+        string _boothName;
 
         [SerializeField]
-        [Tooltip("UIの位置の種類")]
-        UIType _uiType;
+        [Tooltip("表示したいメッセージ")]
+        string _message;
+
+        [SerializeField]
+        [Tooltip("店の種類")]
+        BoothType _boothType;
 
         [SerializeField]
         [Tooltip("UI")]
@@ -97,13 +119,5 @@ public enum BoothType
     ShopSelect,
     ShopBuy,
     ShopSell
-}
-public enum UIType
-{
-    Select0,
-    Select1,
-    Select2,
-    Select3,
-    Select4
 }
 
