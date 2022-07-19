@@ -25,6 +25,9 @@ public class Player : MonoBehaviour
     /// <summary>PlayerHPバー</summary>
     public Slider PlayerHpSlider => _playerHpSlider;
 
+    ///<summary>HPの回復量</summary>
+    public int HpHealth => _hpHealth;
+
 
     /// <summary>PS4コントローラー</summary>
     [SerializeField]
@@ -70,12 +73,19 @@ public class Player : MonoBehaviour
     [Header("PlayerHPバー")]
     Slider _playerHpSlider;
 
+    ///<summary>HPの回復量</summary>
+    [SerializeField]
+    [Header("HPの回復量")]
+    int _hpHealth;
+
     /// <summary>EnemyScript</summary>
     [SerializeField] 
     [Header("EnemyScript")]
     EnemyBase _enemyScript;
 
-    
+    List<ItemBase> _items = new List<ItemBase>();
+
+
     const float X_MOVE = -960f;
     const float SECONDS = 1f;
 
@@ -236,5 +246,33 @@ public class Player : MonoBehaviour
         _playerHP -= WeaponManager.Instance.AllAttacks.First(x => x.WeaponName == "手").Attack;
         _playerHpSlider.value = PlayerHP;
     }
+    public void HPItem()
+    {
+        _items.Add(new ItemPortion());
+        if (PlayerHP == 100)
+        {
+            print("回復しても意味ないよ");
+        }
+        if (PlayerHP < 100)
+        {
+            _playerHP += HpHealth;
+            _playerHpSlider.value = PlayerHP;
+            if (PlayerHP >= 100)
+            {
+                _playerHP = 100;
+            }
+        }
+        //_playerHP += 25;
+        //_playerHP = (int)PlayerHpSlider.value;
+        UseItem(0);
+    }
+
+    private void UseItem(int index)
+    {
+        ItemBase useItem = _items[index];
+        print(index + 1 + "つ目のアイテムを使った");
+        useItem.Use();
+    }
+
     public void WeaponFalse() => _weapon.ForEach(x => x.gameObject.SetActive(false));
 }
