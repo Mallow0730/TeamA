@@ -7,6 +7,11 @@ using System.Linq;
 public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
 {
     [SerializeField]
+    [Header("テキストが流れるスピード")]
+    [Range(0f,1f)]
+    float _speed = 0.03f;
+
+    [SerializeField]
     [Header("全てのUI")]
     List<AllUI> _allUI = new List<AllUI>();
 
@@ -36,13 +41,15 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
 
     Stack<BoothType> _boothTypes = new Stack<BoothType>();
     const int ONE = 1;
+
     void Start() 
     {
-        _explainText.text = _allUI.First(x => x.BoothType == BoothType.Home).Message;
+        //_explainText.text = _allUI.First(x => x.BoothType == BoothType.Home).Message;
         _boothNameText.text = _allUI.First(x => x.BoothType == BoothType.Home).BoothName;
         _moneyText.text = 0.ToString();
         _moneyText.gameObject.SetActive(true);
         _boothTypes.Push(BoothType.Home);
+        StartCoroutine(Explain(_allUI.First(x => x.BoothType == BoothType.Home).Message));
     }
 
     /// <summary>ショップメニューを表示</summary>
@@ -55,7 +62,9 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
         //現在の状態(移動した後の)を保存
         _boothTypes.Push(boothType);
         //テキストを変更
-        _explainText.text = _allUI.First(x => x.BoothType == boothType).Message;
+        //_explainText.text = _allUI.First(x => x.BoothType == boothType).Message;
+        StopAllCoroutines();
+        StartCoroutine(Explain(_allUI.First(x => x.BoothType == _boothTypes.Peek()).Message));
         _boothNameText.text = _allUI.First(x => x.BoothType == boothType).BoothName;
     }
 
@@ -69,13 +78,25 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
         //古いUIを表示
         _allUI.First(x => x.BoothType == _boothTypes.Peek()).SetActive(true);
         //テキストを変更
-        _explainText.text = _allUI.First(x => x.BoothType == _boothTypes.Peek()).Message;
+        //_explainText.text = _allUI.First(x => x.BoothType == _boothTypes.Peek()).Message;
+        StopAllCoroutines();
+        StartCoroutine(Explain(_allUI.First(x => x.BoothType == _boothTypes.Peek()).Message));
         _boothNameText.text = _allUI.First(x => x.BoothType == _boothTypes.Peek()).BoothName;
     }
 
     public void ShopBuy(Text text)
     {
         text.text = _items.Data[0].Price.ToString();
+    }
+
+    IEnumerator Explain(string text)
+    {
+        _explainText.text = "";
+        for(var t = 0; t < text.Length; t++)
+        {
+            _explainText.text += _allUI.First(x => x.BoothType == _boothTypes.Peek()).Message[t];
+            yield return new WaitForSeconds(_speed);
+        }
     }
 
 
