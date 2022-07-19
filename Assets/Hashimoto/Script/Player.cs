@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Linq;
 
@@ -20,6 +21,9 @@ public class Player : MonoBehaviour
     public List<GameObject> Weapon => _weapon;
 
     public List<string> EnemyTags => _enemyTags;
+
+    /// <summary>PlayerHPバー</summary>
+    public Slider PlayerHpSlider => _playerHpSlider;
 
 
     /// <summary>PS4コントローラー</summary>
@@ -61,6 +65,11 @@ public class Player : MonoBehaviour
     [Header("プレイヤーHP")]
     int _playerHP;
 
+    ///<summary>PlayerHPバー</summary>
+    [SerializeField]
+    [Header("PlayerHPバー")]
+    Slider _playerHpSlider;
+
     /// <summary>EnemyScript</summary>
     [SerializeField] 
     [Header("EnemyScript")]
@@ -69,10 +78,6 @@ public class Player : MonoBehaviour
     
     const float X_MOVE = -960f;
     const float SECONDS = 1f;
-    ///// <summary>武器</summary>
-    //[SerializeField]
-    //[Header("武器")]
-    //GameObject _sword;
 
     [SerializeField]
     List<GameObject> _weapon = new List<GameObject>();
@@ -93,6 +98,7 @@ public class Player : MonoBehaviour
     {
         //GameObject.FindGameObjectsWithTag("Enemy").Length
         Scenemanager.Instance.FadeIn(X_MOVE, SECONDS);
+        _playerHpSlider.maxValue = PlayerHP;
         
     }
 
@@ -225,6 +231,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void EnemyAttack() => _playerHP -= WeaponManager.Instance.AllAttacks.First(x => x.WeaponName == "手").Attack;  
+    public void EnemyAttack()
+    {
+        _playerHP -= WeaponManager.Instance.AllAttacks.First(x => x.WeaponName == "手").Attack;
+        _playerHpSlider.value = PlayerHP;
+    }
     public void WeaponFalse() => _weapon.ForEach(x => x.gameObject.SetActive(false));
 }
