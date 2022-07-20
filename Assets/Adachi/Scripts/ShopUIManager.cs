@@ -85,7 +85,7 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
     {
         //今のUIを非表示する
         _allUI.First(x => x.BoothType == _boothTypes.Peek()).SetActive(false);
-        if (_boothTypes.Peek() != BoothType.ShopBuy) _explainPanel.gameObject.SetActive(false);
+        if (_boothTypes.Peek() == BoothType.ShopBuy) _itemDescriptionPanel.gameObject.SetActive(false);
         //今のUIの要素も消す
         if(_boothTypes.Peek() != BoothType.Home)_boothTypes.Pop();
         //古いUIを表示
@@ -98,7 +98,7 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
 
     public void ShopItemExplain(ItemType type)
     {
-        _explainPanel.gameObject.SetActive(true);
+        _itemDescriptionPanel.gameObject.SetActive(true);
         _itemNameText.text = _items.Data.First(x => x.Type == type).Name;
         _itemExplainText.text = _items.Data.First(x => x.Type == type).Explain;
         _itemRarityText.text = RARE + _items.Data.First(x => x.Type == type).Rarity.ToString();

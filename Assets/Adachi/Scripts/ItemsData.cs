@@ -44,6 +44,7 @@ public class ItemsData : ScriptableObject
 }
 public enum ItemType
 {
+    NoData,
     HealItem,
     DetoxifyItem
 }

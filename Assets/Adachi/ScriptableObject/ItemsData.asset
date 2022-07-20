@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _data:
   - _name: "\u56DE\u5FA9\u85AC"
-    _type: 0
+    _type: 1
     _explain: "\u4F53\u529B\u3092\u5C11\u3005\u56DE\u5FA9\u3059\u308B\u85AC\u3002"
     _rarity: 1
     _price: 100
   - _name: "\u89E3\u6BD2\u85AC"
-    _type: 1
+    _type: 2
     _explain: "\u6BD2\u72B6\u614B\u3092\u89E3\u9664\u3059\u308B\u85AC\u3002"
     _rarity: 1
     _price: 200
