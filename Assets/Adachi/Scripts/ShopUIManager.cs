@@ -16,6 +16,18 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
     List<AllUI> _allUI = new List<AllUI>();
 
     [SerializeField]
+    [Header("アイテム名のテキスト")]
+    Text _itemNameText;
+
+    [SerializeField]
+    [Header("アイテム説明のテキスト")]
+    Text _itemExplainText;
+
+    [SerializeField]
+    [Header("アイテムのレア度のテキスト")]
+    Text _itemRarityText;
+
+    [SerializeField]
     [Header("所持金のテキスト")]
     Text _moneyText;
 
@@ -41,6 +53,7 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
 
     Stack<BoothType> _boothTypes = new Stack<BoothType>();
     const int ONE = 1;
+    const string RARE = "RARE ";
 
     void Start() 
     {
@@ -62,7 +75,6 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
         //現在の状態(移動した後の)を保存
         _boothTypes.Push(boothType);
         //テキストを変更
-        //_explainText.text = _allUI.First(x => x.BoothType == boothType).Message;
         StopAllCoroutines();
         StartCoroutine(Explain(_allUI.First(x => x.BoothType == _boothTypes.Peek()).Message));
         _boothNameText.text = _allUI.First(x => x.BoothType == boothType).BoothName;
@@ -73,20 +85,28 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
     {
         //今のUIを非表示する
         _allUI.First(x => x.BoothType == _boothTypes.Peek()).SetActive(false);
+        if (_boothTypes.Peek() != BoothType.ShopBuy) _explainPanel.gameObject.SetActive(false);
         //今のUIの要素も消す
         if(_boothTypes.Peek() != BoothType.Home)_boothTypes.Pop();
         //古いUIを表示
         _allUI.First(x => x.BoothType == _boothTypes.Peek()).SetActive(true);
         //テキストを変更
-        //_explainText.text = _allUI.First(x => x.BoothType == _boothTypes.Peek()).Message;
         StopAllCoroutines();
         StartCoroutine(Explain(_allUI.First(x => x.BoothType == _boothTypes.Peek()).Message));
         _boothNameText.text = _allUI.First(x => x.BoothType == _boothTypes.Peek()).BoothName;
     }
 
-    public void ShopBuy(Text text)
+    public void ShopItemExplain(ItemType type)
     {
-        text.text = _items.Data[0].Price.ToString();
+        _explainPanel.gameObject.SetActive(true);
+        _itemNameText.text = _items.Data.First(x => x.Type == type).Name;
+        _itemExplainText.text = _items.Data.First(x => x.Type == type).Explain;
+        _itemRarityText.text = RARE + _items.Data.First(x => x.Type == type).Rarity.ToString();
+    }
+
+    public void ShopBuy()
+    {
+       //  = _items.Data[0].Price.ToString();
     }
 
     IEnumerator Explain(string text)

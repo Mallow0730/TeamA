@@ -7,10 +7,15 @@ using UnityEditor;
 public class ButtonSupporter : MonoBehaviour
 {
     [SerializeField]
-    [Header("次に行きたい店の種類")]
+    [Header("次に行きたい店の種類(移動用)")]
     BoothType _boothType;
+    
+    [SerializeField]
+    [Header("アイテムのタイプ(ショップのボタン用)")]
+    ItemType _type;
 
     public void NextMenu() => ShopUIManager.Instance.NextMenu(_boothType);
     public void BackMenu() => ShopUIManager.Instance.BackMenu();
-    public void ShopBuy(Text text) => ShopUIManager.Instance.ShopBuy(text);
+    public void ShopItemExplain() => ShopUIManager.Instance.ShopItemExplain(_type);
+    public void ShopBuy() => ShopUIManager.Instance.ShopBuy();
 }
