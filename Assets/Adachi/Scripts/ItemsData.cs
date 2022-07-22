@@ -42,9 +42,3 @@ public class ItemsData : ScriptableObject
         int _price;
     }
 }
-public enum ItemType
-{
-    NoData,
-    HealItem,
-    DetoxifyItem
-}

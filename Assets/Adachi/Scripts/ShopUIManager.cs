@@ -61,11 +61,12 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
     void Start() 
     {
         //左上のの名前を変更
-        _boothNameText.text = _allUI.First(x => x.BoothType == BoothType.Home).BoothName;
+        _boothNameText.text = _allUI.FirstOrDefault(x => x.BoothType == BoothType.Home).BoothName;
         _moneyText.text = 0.ToString();
         _moneyText.gameObject.SetActive(true);
         _boothTypes.Push(BoothType.Home);
-        StartCoroutine(Explain(_allUI.First(x => x.BoothType == BoothType.Home).Message));
+        StartCoroutine(Explain(_allUI.FirstOrDefault(x => x.BoothType == BoothType.Home).Message));
+        Mathf.Floor(0);
     }
 
     /// <summary>ショップメニューを表示</summary>
@@ -79,9 +80,9 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
         _boothTypes.Push(boothType);
         //左下の説明テキストを変更
         StopAllCoroutines();
-        StartCoroutine(Explain(_allUI.First(x => x.BoothType == _boothTypes.Peek()).Message));
+        StartCoroutine(Explain(_allUI.FirstOrDefault(x => x.BoothType == _boothTypes.Peek()).Message));
         //左上の名前を変更
-        _boothNameText.text = _allUI.First(x => x.BoothType == boothType).BoothName;
+        _boothNameText.text = _allUI.FirstOrDefault(x => x.BoothType == boothType).BoothName;
         _isFirst = true;
     }
 
@@ -94,16 +95,16 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
         //今のUIの要素も消す
         if(_boothTypes.Peek() != BoothType.Home)_boothTypes.Pop();
         //古いUIを表示
-        _allUI.First(x => x.BoothType == _boothTypes.Peek()).SetActive(true);
+        _allUI.FirstOrDefault(x => x.BoothType == _boothTypes.Peek()).SetActive(true);
         //左下の説明テキストを変更
         if(_isFirst)
         {
             StopAllCoroutines();
-            StartCoroutine(Explain(_allUI.First(x => x.BoothType == _boothTypes.Peek()).Message));
+            StartCoroutine(Explain(_allUI.FirstOrDefault(x => x.BoothType == _boothTypes.Peek()).Message));
         }
         if (_boothTypes.Peek() == BoothType.Home) _isFirst = false;
         //左上の名前を変更
-        _boothNameText.text = _allUI.First(x => x.BoothType == _boothTypes.Peek()).BoothName;
+        _boothNameText.text = _allUI.FirstOrDefault(x => x.BoothType == _boothTypes.Peek()).BoothName;
     }
 
     /// <summary>アイテム説明のUI</summary>
@@ -112,9 +113,9 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
         //表示
         _itemExplainPanel.gameObject.SetActive(true);
         //それぞれアイテム名、説明文、レア度を変更
-        _itemNameText.text = _items.Data.First(x => x.Type == type).Name;
-        _itemExplainText.text = _items.Data.First(x => x.Type == type).Explain;
-        _itemRarityText.text = RARE + _items.Data.First(x => x.Type == type).Rarity.ToString();
+        _itemNameText.text = _items.Data.FirstOrDefault(x => x.Type == type).Name;
+        _itemExplainText.text = _items.Data.FirstOrDefault(x => x.Type == type).Explain;
+        _itemRarityText.text = RARE + _items.Data.FirstOrDefault(x => x.Type == type).Rarity.ToString();
     }
 
     public void ShopIsBuy(ItemType type)
@@ -133,7 +134,7 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
         _explainText.text = "";
         for(var t = 0; t < text.Length; t++)
         {
-            _explainText.text += _allUI.First(x => x.BoothType == _boothTypes.Peek()).Message[t];
+            _explainText.text += _allUI.FirstOrDefault(x => x.BoothType == _boothTypes.Peek()).Message[t];
             yield return new WaitForSeconds(_speed);
         }
     }
@@ -172,12 +173,5 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
             _ui.gameObject.SetActive(set);
         }
     }
-}
-public enum BoothType
-{
-    Home,
-    ShopSelect,
-    ShopBuy,
-    ShopSell
 }
 
