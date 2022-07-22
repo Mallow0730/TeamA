@@ -9,6 +9,7 @@ public class ItemsData : ScriptableObject
     public List<ItemData> Data => _data;
 
     [SerializeField]
+    [Header("アイテム")]
     List<ItemData> _data = new List<ItemData>();
 
     [Serializable]

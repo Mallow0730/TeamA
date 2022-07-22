@@ -14,13 +14,10 @@ public class ButtonSupporter : MonoBehaviour
     [Header("アイテムのタイプ(ショップのボタン用)")]
     ItemType _type;
 
-    void Awake()
-    {
-        
-    }
-
     public void NextMenu() => HomeUIManager.Instance.NextMenu(_boothType);
     public void BackMenu() => HomeUIManager.Instance.BackMenu();
     public void ShopItemExplain() => HomeUIManager.Instance.ShopItemExplain(_type);
-    public void ShopBuy() => HomeUIManager.Instance.ShopBuy();
+    public void ShopItemExplainSetActive(bool _active) => HomeUIManager.Instance.ShopItemExplainSetActive(_active);
+    public void ShopItemIsBuy() => HomeUIManager.Instance.ShopItemIsBuy(_type);
+    public void ShopItemBought() => StartCoroutine(HomeUIManager.Instance.ShopItemBought(_type));
 }

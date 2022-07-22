@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType
+public enum BoothType
 {
     NoData,
-    HealItem,
-    DetoxifyItem
+    Home,
+    ShopSelect,
+    ShopBuy,
+    ShopSell,
+    QuestSelect
 }

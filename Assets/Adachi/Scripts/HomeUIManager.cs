@@ -12,6 +12,11 @@ public class HomeUIManager : SingletonMonoBehaviour<HomeUIManager>
     float _speed = 0.03f;
 
     [SerializeField]
+    [Header("アイテム購入時に表示されるテキストの表示時間")]
+    [Range(0.1f,10f)]
+    float _displaySeconds = 1f;
+
+    [SerializeField]
     [Header("全てのUI")]
     List<AllUI> _allUI = new List<AllUI>();
 
@@ -36,6 +41,14 @@ public class HomeUIManager : SingletonMonoBehaviour<HomeUIManager>
     Text _boothNameText;
 
     [SerializeField]
+    [Header("アイテム購入確認のテキスト")]
+    Text _itemIsBuyText;
+
+    [SerializeField]
+    [Header("アイテムを購入したときのテキスト")]
+    Text _itemBoughtText;
+
+    [SerializeField]
     [Header("左下の説明テキスト")]
     Text _explainText;
 
@@ -48,6 +61,10 @@ public class HomeUIManager : SingletonMonoBehaviour<HomeUIManager>
     Image _itemExplainPanel;
 
     [SerializeField]
+    [Header("アイテム購入のパネル")]
+    Image _itemIsBuyPanel;
+
+    [SerializeField]
     [Header("買えるアイテム")]
     ItemsData _items;
 
@@ -57,6 +74,8 @@ public class HomeUIManager : SingletonMonoBehaviour<HomeUIManager>
     Stack<BoothType> _boothTypes = new Stack<BoothType>();
     /// <summary>アイテムのレア度のテキスト</summary>
     const string RARE = "RARE ";
+    const string IS_BUY = "を購入しますか?";
+    const string BOUGHT = "を購入しました";
 
     void Start() 
     {
@@ -109,36 +128,50 @@ public class HomeUIManager : SingletonMonoBehaviour<HomeUIManager>
 
     /// <summary>アイテム説明のUI</summary>
     public void ShopItemExplain(ItemType type)
-    {
-        //表示
-        _itemExplainPanel.gameObject.SetActive(true);
+    {　　　
         //それぞれアイテム名、説明文、レア度を変更
         _itemNameText.text = _items.Data.FirstOrDefault(x => x.Type == type).Name;
         _itemExplainText.text = _items.Data.FirstOrDefault(x => x.Type == type).Explain;
         _itemRarityText.text = RARE + _items.Data.FirstOrDefault(x => x.Type == type).Rarity.ToString();
     }
 
-    public void ShopIsBuy(ItemType type)
+    /// <summary>アイテム説明パネルを表示非表示する</summary>
+    public void ShopItemExplainSetActive(bool _active)
     {
+        _itemExplainPanel.gameObject.SetActive(_active);
+    }
 
+    /// <summary>アイテムを購入するかどうか</summary>
+    public void ShopItemIsBuy(ItemType type)
+    {
+        //購入画面ののテキストを変更
+        _itemIsBuyText.text = _items.Data.FirstOrDefault(x => x.Type == type).Name + IS_BUY;
+        //パネルを表示
+        _itemIsBuyPanel.gameObject.SetActive(true);
     }
 
     /// <summary>アイテム購入用</summary>
-    public void ShopBuy()
+    public IEnumerator ShopItemBought(ItemType type)
     {
-       //  = _items.Data[0].Price.ToString();
+        _itemIsBuyPanel.gameObject.SetActive(false);
+        _itemBoughtText.text = _items.Data.FirstOrDefault(x => x.Type == type).Name + BOUGHT;
+        _itemBoughtText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(_displaySeconds);
+        _itemBoughtText.gameObject.SetActive(false);
     }
 
+    /// <summary>テキストを1文字ずつ時間差で表示する</summary>
     IEnumerator Explain(string text)
     {
+        //空にする
         _explainText.text = "";
+        //一文字ずつ表示
         for(var t = 0; t < text.Length; t++)
         {
             _explainText.text += _allUI.FirstOrDefault(x => x.BoothType == _boothTypes.Peek()).Message[t];
             yield return new WaitForSeconds(_speed);
         }
     }
-
 
     [System.Serializable]
     public class AllUI
@@ -174,4 +207,3 @@ public class HomeUIManager : SingletonMonoBehaviour<HomeUIManager>
         }
     }
 }
-
