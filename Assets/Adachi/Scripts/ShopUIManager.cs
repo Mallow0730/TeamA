@@ -45,19 +45,22 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
 
     [SerializeField]
     [Header("アイテム説明のパネル")]
-    Image _itemDescriptionPanel;
+    Image _itemExplainPanel;
 
     [SerializeField]
     [Header("買えるアイテム")]
     ItemsData _items;
 
+    /// <summary>一回だけ</summary>
+    bool _isFirst;
+    /// <summary>通った道の記録</summary>
     Stack<BoothType> _boothTypes = new Stack<BoothType>();
-    const int ONE = 1;
+    /// <summary>アイテムのレア度のテキスト</summary>
     const string RARE = "RARE ";
 
     void Start() 
     {
-        //_explainText.text = _allUI.First(x => x.BoothType == BoothType.Home).Message;
+        //左上のの名前を変更
         _boothNameText.text = _allUI.First(x => x.BoothType == BoothType.Home).BoothName;
         _moneyText.text = 0.ToString();
         _moneyText.gameObject.SetActive(true);
@@ -74,10 +77,12 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
         _allUI.First(x => x.BoothType == _boothTypes.Peek()).SetActive(false);
         //現在の状態(移動した後の)を保存
         _boothTypes.Push(boothType);
-        //テキストを変更
+        //左下の説明テキストを変更
         StopAllCoroutines();
         StartCoroutine(Explain(_allUI.First(x => x.BoothType == _boothTypes.Peek()).Message));
+        //左上の名前を変更
         _boothNameText.text = _allUI.First(x => x.BoothType == boothType).BoothName;
+        _isFirst = true;
     }
 
     /// <summary>戻る</summary>
@@ -85,25 +90,39 @@ public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
     {
         //今のUIを非表示する
         _allUI.First(x => x.BoothType == _boothTypes.Peek()).SetActive(false);
-        if (_boothTypes.Peek() == BoothType.ShopBuy) _itemDescriptionPanel.gameObject.SetActive(false);
+        if (_boothTypes.Peek() == BoothType.ShopBuy) _itemExplainPanel.gameObject.SetActive(false);
         //今のUIの要素も消す
         if(_boothTypes.Peek() != BoothType.Home)_boothTypes.Pop();
         //古いUIを表示
         _allUI.First(x => x.BoothType == _boothTypes.Peek()).SetActive(true);
-        //テキストを変更
-        StopAllCoroutines();
-        StartCoroutine(Explain(_allUI.First(x => x.BoothType == _boothTypes.Peek()).Message));
+        //左下の説明テキストを変更
+        if(_isFirst)
+        {
+            StopAllCoroutines();
+            StartCoroutine(Explain(_allUI.First(x => x.BoothType == _boothTypes.Peek()).Message));
+        }
+        if (_boothTypes.Peek() == BoothType.Home) _isFirst = false;
+        //左上の名前を変更
         _boothNameText.text = _allUI.First(x => x.BoothType == _boothTypes.Peek()).BoothName;
     }
 
+    /// <summary>アイテム説明のUI</summary>
     public void ShopItemExplain(ItemType type)
     {
-        _itemDescriptionPanel.gameObject.SetActive(true);
+        //表示
+        _itemExplainPanel.gameObject.SetActive(true);
+        //それぞれアイテム名、説明文、レア度を変更
         _itemNameText.text = _items.Data.First(x => x.Type == type).Name;
         _itemExplainText.text = _items.Data.First(x => x.Type == type).Explain;
         _itemRarityText.text = RARE + _items.Data.First(x => x.Type == type).Rarity.ToString();
     }
 
+    public void ShopIsBuy(ItemType type)
+    {
+
+    }
+
+    /// <summary>アイテム購入用</summary>
     public void ShopBuy()
     {
        //  = _items.Data[0].Price.ToString();

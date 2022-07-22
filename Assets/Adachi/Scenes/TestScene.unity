@@ -992,7 +992,7 @@ MonoBehaviour:
   _boothNameText: {fileID: 960301051}
   _explainText: {fileID: 673859883}
   _explainPanel: {fileID: 1746269314}
-  _itemDescriptionPanel: {fileID: 1857942745}
+  _itemExplainPanel: {fileID: 1857942745}
   _items: {fileID: 11400000, guid: ce1ee0b614c6e42408b25a6a01791362, type: 2}
 --- !u!4 &499792259
 Transform:
@@ -3256,7 +3256,7 @@ GameObject:
   - component: {fileID: 1854398105}
   - component: {fileID: 1854398104}
   m_Layer: 5
-  m_Name: ExplainItemText
+  m_Name: ItemExplainText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
