@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-public class ShopUIManager : SingletonMonoBehaviour<ShopUIManager>
+public class HomeUIManager : SingletonMonoBehaviour<HomeUIManager>
 {
     [SerializeField]
     [Header("テキストが流れるスピード")]

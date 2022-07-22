@@ -19,8 +19,8 @@ public class ButtonSupporter : MonoBehaviour
         
     }
 
-    public void NextMenu() => ShopUIManager.Instance.NextMenu(_boothType);
-    public void BackMenu() => ShopUIManager.Instance.BackMenu();
-    public void ShopItemExplain() => ShopUIManager.Instance.ShopItemExplain(_type);
-    public void ShopBuy() => ShopUIManager.Instance.ShopBuy();
+    public void NextMenu() => HomeUIManager.Instance.NextMenu(_boothType);
+    public void BackMenu() => HomeUIManager.Instance.BackMenu();
+    public void ShopItemExplain() => HomeUIManager.Instance.ShopItemExplain(_type);
+    public void ShopBuy() => HomeUIManager.Instance.ShopBuy();
 }
