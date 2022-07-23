@@ -28,6 +28,9 @@ public class Player : MonoBehaviour
     ///<summary>HPの回復量</summary>
     public int HpHealth => _hpHealth;
 
+    /// <summary>体力スライダー</summary>
+    public Slider HPSlider => _HPSlider;
+
 
     /// <summary>PS4コントローラー</summary>
     [SerializeField]
@@ -44,6 +47,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Header("歩くスピード")]
     float _maxSpeed = 5f;
+
+    /// <summary>体力スライダー</summary>
+    [SerializeField]
+    [Header("体力スライダー")]
+    Slider _HPSlider;
 
     /// <summary>InputAction</summary>
     InputAction _move;
@@ -106,10 +114,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        //GameObject.FindGameObjectsWithTag("Enemy").Length
         Scenemanager.Instance.FadeIn(X_MOVE, SECONDS);
         _playerHpSlider.maxValue = PlayerHP;
-        
     }
 
         private void OnEnable()
@@ -136,10 +142,23 @@ public class Player : MonoBehaviour
     {
         _animator.SetFloat("speed", _rb.velocity.sqrMagnitude / MaxSpeed);
         //_allEnemys.Remove(_allEnemys[0]);//removeでリストから除外する
-        PlayerKill();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            PlayerKill();
+        }
     }
     public void PlayerKill()
     {
+        _playerHP -= WeaponManager.Instance.AllAttacks.LastOrDefault(x => x.Name == "手").Attack;
+        _HPSlider.value = PlayerHP;
+        print(PlayerHP);
         if (PlayerHP <= 0)
         {
             gameObject.SetActive(false);
@@ -179,7 +198,6 @@ public class Player : MonoBehaviour
         _rb.angularVelocity = Vector3.zero;
         _animator.SetTrigger("kick");
     }
-
     void Jump(InputAction.CallbackContext obj)
     {
         _rb.velocity = Vector3.zero;
@@ -228,24 +246,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Change()
-    {
-        _canMove = !_canMove;
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Enemy")
-        {
-            EnemyAttack();
-        }
-    }
-
-    public void EnemyAttack()
-    {
-        _playerHP -= WeaponManager.Instance.AllAttacks.First(x => x.WeaponName == "手").Attack;
-        _playerHpSlider.value = PlayerHP;
-    }
+    public void Change() => _canMove = !_canMove;
     public void HPItem()
     {
         _items.Add(new ItemPortion());
@@ -274,5 +275,7 @@ public class Player : MonoBehaviour
         useItem.Use();
     }
 
+    /// <summary>アニメーターで実装</summary>
     public void WeaponFalse() => _weapon.ForEach(x => x.gameObject.SetActive(false));
+    //public void WeaponTrue() => _weapon.ForEach(x => x.gameObject.SetActive(true));
 }

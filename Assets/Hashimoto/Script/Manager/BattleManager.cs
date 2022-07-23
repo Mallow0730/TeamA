@@ -37,7 +37,7 @@ public class BattleManager : SingletonMonoBehaviour<BattleManager>
         _allEnemys.Remove(enemy);
         print(_allEnemys.Count);
 
-        if (_allEnemys.Count <= 0)
+        if (_allEnemys.Count == 0)
         {
             print("GameClear");
         }

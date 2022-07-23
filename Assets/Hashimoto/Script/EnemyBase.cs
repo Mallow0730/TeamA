@@ -41,7 +41,6 @@ public class EnemyBase : MonoBehaviour
     /// <summary>現在の体力</summary>
     int _currentHP;
 
-
     protected virtual void Start()
     {
         Slider.maxValue = EnemyHP;
@@ -51,17 +50,17 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Update() => Canvas.transform.rotation = Camera.main.transform.rotation;
 
-    protected virtual void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Weapon")
         {
             EnemyDamege();
         }
     }
-
     protected virtual void EnemyDamege()
     {
-        _enemyHP -= WeaponManager.Instance.AllAttacks.First(x => x.WeaponName == "刀").Attack ;
+        _enemyHP -= WeaponManager.Instance.AllAttacks.First(x => x.Name == "刀").Attack;
+        print(EnemyHP);
         Slider.value = EnemyHP;
         if (EnemyHP <= 0)
         {
