@@ -10,4 +10,6 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
     AudioSource _audioSource;
 
     public void SE(AudioClip clip) => _audioSource.PlayOneShot(clip);
+    public void SEStop() => _audioSource.Stop();
+    public void BGM() => _audioSource.Play();
 }

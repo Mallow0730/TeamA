@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class MoneyManager : SingletonMonoBehaviour<MoneyManager>
 {
+    int _coin;
     void Start()
     {
-        
+        _coin += GameManager.Instance.Coin;
     }
 
     void Update()
