@@ -19,4 +19,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     /// <summary>経験値の合計値</summary>
     [Header("経験値の合計値")]
     int _exp;
+
+    public int ChangeCoin(int coin) => _coin += coin;
 }

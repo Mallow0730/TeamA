@@ -8,7 +8,7 @@ using System.Linq;
 /// <summary>
 /// Playerの神クラス
 /// </summary>
-public class Player : MonoBehaviour,IDamage
+public class Player : MonoBehaviour, IDamage
 {
     /// <summary>Playerの移動速度</summary>
     public float MaxSpeed => _maxSpeed;
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour,IDamage
     [Header("歩くスピード")]
     private Camera _playerCamera;
 
-    
+
     /// <summary>歩くスピード</summary>
     [SerializeField]
     [Header("歩くスピード")]
@@ -97,7 +97,7 @@ public class Player : MonoBehaviour,IDamage
     int _damage;
 
     /// <summary>EnemyScript</summary>
-    [SerializeField] 
+    [SerializeField]
     [Header("EnemyScript")]
     EnemyBase _enemyScript;
 
@@ -128,57 +128,51 @@ public class Player : MonoBehaviour,IDamage
         _playerHpSlider.maxValue = PlayerHP;
     }
 
-        private void OnEnable()
+    private void OnEnable()
     {
         _playerActionsAsset.Player.Attack.started += Attack;
         _playerActionsAsset.Player.Block.started += Attack2;
         _playerActionsAsset.Player.Jump.started += Jump;
+        _playerActionsAsset.Player.Item.started += Item;
 
         _move = _playerActionsAsset.Player.Move;
         _playerActionsAsset.Player.Enable();
     }
 
-    
+
 
     private void OnDisable()
     {
         _playerActionsAsset.Player.Attack.started -= Attack;
         _playerActionsAsset.Player.Block.started -= Attack2;
         _playerActionsAsset.Player.Jump.started -= Jump;
+        _playerActionsAsset.Player.Item.started -= Item;
 
         _playerActionsAsset.Player.Disable();
     }
     void Update()
     {
         _animator.SetFloat("speed", _rb.velocity.sqrMagnitude / MaxSpeed);
-        //_allEnemys.Remove(_allEnemys[0]);//removeでリストから除外する
+        PlayerKill();
     }
-
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out IDamage enemy))
+        if (other.TryGetComponent(out IDamage enemy))
         {
-            enemy.GetDamage(10);//マジックナンバー修正しょうね
+            enemy.GetDamage(Damage);
         }
     }
     public void GetDamage(int d)
     {
-        this._damage = d;
-        PlayerHpSlider.value -= Damage;
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        
+        HPProperty(d);
+        PlayerHpSlider.value -= d;
     }
     public void PlayerKill()
     {
-        _playerHP -= WeaponManager.Instance.AllAttacks.LastOrDefault(x => x.Name == "手").Attack;
-        _HPSlider.value = PlayerHP;
-        print(PlayerHP);
         if (PlayerHP <= 0)
         {
             gameObject.SetActive(false);
-            Scenemanager.Instance.FadeOut(GAMEOVER_SCENE,+X_MOVE,SECONDS);
+            Scenemanager.Instance.FadeOut(GAMEOVER_SCENE, +X_MOVE, SECONDS);
         }
     }
 
@@ -221,7 +215,24 @@ public class Player : MonoBehaviour,IDamage
         _rb.angularVelocity = Vector3.zero;
         _animator.SetTrigger("jump");
     }
-
+    private void Item(InputAction.CallbackContext obj)
+    {
+        _items.Add(new ItemPortion());
+        if (PlayerHP == 100)
+        {
+            print("回復しても意味ないよ");
+        }
+        if (PlayerHP < 100)
+        {
+            _playerHP += HpHealth;
+            _playerHpSlider.value = PlayerHP;
+            if (PlayerHP >= 100)
+            {
+                _playerHP = 100;
+            }
+        }
+        UseItem(0);
+    }
     Vector3 GetCameraRight(Camera playerCamera)
     {
         Vector3 right = _playerCamera.transform.right;
@@ -264,24 +275,6 @@ public class Player : MonoBehaviour,IDamage
     }
 
     public void Change() => _canMove = !_canMove;
-    public void HPItem()
-    {
-        _items.Add(new ItemPortion());
-        if (PlayerHP == 100)
-        {
-            print("回復しても意味ないよ");
-        }
-        if (PlayerHP < 100)
-        {
-            _playerHP += HpHealth;
-            _playerHpSlider.value = PlayerHP;
-            if (PlayerHP >= 100)
-            {
-                _playerHP = 100;
-            }
-        }
-        UseItem(0);
-    }
     private void UseItem(int index)
     {
         ItemBase useItem = _items[index];
@@ -290,4 +283,6 @@ public class Player : MonoBehaviour,IDamage
     }
     /// <summary>アニメーターで実装</summary>
     public void WeaponFalse() => _weapon.ForEach(x => x.gameObject.SetActive(false));
+
+    public void HPProperty(int hp) => _playerHP -= hp;
 }

@@ -20,6 +20,9 @@ public class EnemyBase : MonoBehaviour
     /// <summar>現在の体力</summary>
     public int CurrentHP => _currentHP;
 
+    /// <summary>ダメージ量</summary>
+    public int Damage => _damage;
+
     /// <summary>EnemyのHP</summary>
     [SerializeField]
     [Header("敵のHP")]
@@ -40,6 +43,9 @@ public class EnemyBase : MonoBehaviour
     [Header("武器の攻撃力")] 
     int _attack;
 
+    /// <summary>ダメージ量</summary>
+    int _damage;
+
     /// <summary>現在の体力</summary>
     int _currentHP;
 
@@ -50,13 +56,17 @@ public class EnemyBase : MonoBehaviour
         _currentHP = _enemyHP;
     }
 
-    protected virtual void Update() => Canvas.transform.rotation = Camera.main.transform.rotation;
+    protected virtual void Update()
+    {
+        Canvas.transform.rotation = Camera.main.transform.rotation;
+        EnemyDamege();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out IDamage player))
         {
-            player.GetDamage(20);
+            player.GetDamage(Damage);
         }
     }
     protected virtual void EnemyDamege()
@@ -67,4 +77,5 @@ public class EnemyBase : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public void HPProperty(int damage) => _enemyHP -= damage;
 }
