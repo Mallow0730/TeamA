@@ -47886,10 +47886,10 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.5666667
+  - time: 0.8
     functionName: WeaponFalse
     data: 
-    objectReferenceParameter: {fileID: 1388041452678779025, guid: 75e8ef32258ce794ca9faa4751de6186,
+    objectReferenceParameter: {fileID: 6608531307259264084, guid: eb25f9b1dc89eb74683adff469b4638c,
       type: 3}
     floatParameter: 0
     intParameter: 0

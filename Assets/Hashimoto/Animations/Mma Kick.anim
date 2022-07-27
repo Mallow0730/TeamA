@@ -67471,10 +67471,11 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.7666667
+  - time: 0.96666664
     functionName: WeaponFalse
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 2239479511868973373, guid: cb0a953f21101ed4da8ec87b5e678edb,
+      type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

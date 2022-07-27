@@ -2,21 +2,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
-
-public class Player : MonoBehaviour
+using System.Linq;
+/// <summary>
+/// Playerの神クラス
+/// </summary>
+public class Player : MonoBehaviour,IDamage
 {
     /// <summary>Playerの移動速度</summary>
     public float MaxSpeed => _maxSpeed;
 
     /// <summary>PlayerのHP</summary>
-    public int PlayerHP { get => _playerHP; set => _playerHP = value; }
+    public int PlayerHP => _playerHP;
 
     /// <summary>EnemyのScript</summary>
-    public EnemyBase EnemyScript { get => _enemyScript; set => _enemyScript = value; }
+    public EnemyBase EnemyScript => _enemyScript;
 
     /// <summary>武器</summary>
-    //public GameObject Sword { get => _sword; set => _sword = value; }
+    public List<GameObject> Weapon => _weapon;
+
+    public List<string> EnemyTags => _enemyTags;
+
+    /// <summary>PlayerHPバー</summary>
+    public Slider PlayerHpSlider => _playerHpSlider;
+
+    ///<summary>HPの回復量</summary>
+    public int HpHealth => _hpHealth;
+
+    /// <summary>体力スライダー</summary>
+    public Slider HPSlider => _HPSlider;
 
 
     /// <summary>PS4コントローラー</summary>
@@ -34,6 +49,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     [Header("歩くスピード")]
     float _maxSpeed = 5f;
+
+    /// <summary>体力スライダー</summary>
+    [SerializeField]
+    [Header("体力スライダー")]
+    Slider _HPSlider;
 
     /// <summary>InputAction</summary>
     InputAction _move;
@@ -53,32 +73,46 @@ public class Player : MonoBehaviour
     /// <summary>動くかの判別</summary>
     bool _canMove;
 
-    /// <summary>敵のタグ</summary>
-    string _enemyTag = "Enemy";
-
-    /// <summary>ボスのタグ</summary>
-    string _bossTag = "BigBoss";
+    ///<summary>ダメージ力</summary>
+    public int Damage => _damage;
 
     /// <summary>PlayerHP</summary>
     [SerializeField]
     [Header("プレイヤーHP")]
     int _playerHP;
 
+    ///<summary>PlayerHPバー</summary>
+    [SerializeField]
+    [Header("PlayerHPバー")]
+    Slider _playerHpSlider;
+
+    ///<summary>HPの回復量</summary>
+    [SerializeField]
+    [Header("HPの回復量")]
+    int _hpHealth;
+
+    ///<summary>ダメージ力</summary>
+    [SerializeField]
+    [Header("ダメージ力")]
+    int _damage;
+
     /// <summary>EnemyScript</summary>
     [SerializeField] 
     [Header("EnemyScript")]
     EnemyBase _enemyScript;
 
+    List<ItemBase> _items = new List<ItemBase>();
+
+
+    const float X_MOVE = 960f;
+    const float SECONDS = 1f;
+
     [SerializeField]
-    string _sceneName;
+    List<GameObject> _weapon = new List<GameObject>();
 
-    ///// <summary>武器</summary>
-    //[SerializeField]
-    //[Header("武器")]
-    //GameObject _sword;
+    List<string> _enemyTags = new List<string>();
 
-    public List<GameObject> a = new List<GameObject>();
-
+    const string GAMEOVER_SCENE = "GameOverScene";
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -88,14 +122,17 @@ public class Player : MonoBehaviour
         _targetRotation = transform.rotation;
     }
 
-    private void OnEnable()
+    private void Start()
+    {
+        Scenemanager.Instance.FadeIn(-X_MOVE, SECONDS);
+        _playerHpSlider.maxValue = PlayerHP;
+    }
+
+        private void OnEnable()
     {
         _playerActionsAsset.Player.Attack.started += Attack;
         _playerActionsAsset.Player.Block.started += Attack2;
         _playerActionsAsset.Player.Jump.started += Jump;
-
-        //_playerActionsAsset.Player.SpeedUp.started += Speed;
-        //_playerActionsAsset.Player.SpeedUp.canceled += Speed;
 
         _move = _playerActionsAsset.Player.Move;
         _playerActionsAsset.Player.Enable();
@@ -109,26 +146,43 @@ public class Player : MonoBehaviour
         _playerActionsAsset.Player.Block.started -= Attack2;
         _playerActionsAsset.Player.Jump.started -= Jump;
 
-        //_playerActionsAsset.Player.SpeedUp.started -= Speed;
-        //_playerActionsAsset.Player.SpeedUp.canceled -= Speed;
-
         _playerActionsAsset.Player.Disable();
     }
     void Update()
     {
         _animator.SetFloat("speed", _rb.velocity.sqrMagnitude / MaxSpeed);
-        PlayerKill();
+        //_allEnemys.Remove(_allEnemys[0]);//removeでリストから除外する
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.TryGetComponent(out IDamage enemy))
+        {
+            enemy.GetDamage(10);//マジックナンバー修正しょうね
+        }
+    }
+    public void GetDamage(int d)
+    {
+        this._damage = d;
+        PlayerHpSlider.value -= Damage;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        
     }
     public void PlayerKill()
     {
+        _playerHP -= WeaponManager.Instance.AllAttacks.LastOrDefault(x => x.Name == "手").Attack;
+        _HPSlider.value = PlayerHP;
+        print(PlayerHP);
         if (PlayerHP <= 0)
         {
-            BattleManager.battleInstance.Player.SetActive(false);
-            //Scenemanager.Instance.FadeOut(_sceneName);
-            //ゲームオーバーシーンに飛ぶ
+            gameObject.SetActive(false);
+            Scenemanager.Instance.FadeOut(GAMEOVER_SCENE,+X_MOVE,SECONDS);
         }
     }
-    private void FixedUpdate()
+
+    void FixedUpdate()
     {
         SpeedCheck();
 
@@ -145,41 +199,44 @@ public class Player : MonoBehaviour
 
         LookAt();
     }
-    private void Attack(InputAction.CallbackContext obj)
+
+    void Attack(InputAction.CallbackContext obj)
     {
-        a[0].SetActive(true);
+        _weapon[0].SetActive(true);
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
         _animator.SetTrigger("attack");
     }
-    private void Attack2(InputAction.CallbackContext obj)
+
+    void Attack2(InputAction.CallbackContext obj)
     {
-        a[1].SetActive(true);
+        _weapon[1].SetActive(true);
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
         _animator.SetTrigger("kick");
     }
-    private void Jump(InputAction.CallbackContext obj)
+    void Jump(InputAction.CallbackContext obj)
     {
         _rb.velocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
         _animator.SetTrigger("jump");
     }
 
-
-    private Vector3 GetCameraRight(Camera playerCamera)
+    Vector3 GetCameraRight(Camera playerCamera)
     {
         Vector3 right = _playerCamera.transform.right;
         right.y = 0;
         return right.normalized;
     }
-    private Vector3 GetCameraForward(Camera playerCamera)
+
+    Vector3 GetCameraForward(Camera playerCamera)
     {
         Vector3 forward = _playerCamera.transform.forward;
         forward.y = 0;
         return forward.normalized;
     }
-    private void SpeedCheck()
+
+    void SpeedCheck()
     {
         Vector3 playerVelocity = _rb.velocity;
         playerVelocity.y = 0;
@@ -189,7 +246,8 @@ public class Player : MonoBehaviour
             _rb.velocity = playerVelocity.normalized * MaxSpeed;
         }
     }
-    private void LookAt()
+
+    void LookAt()
     {
         Vector3 direction = _rb.velocity;
         direction.y = 0;
@@ -204,44 +262,32 @@ public class Player : MonoBehaviour
             _rb.angularVelocity = Vector3.zero;
         }
     }
-    public void Change()
-    {
-        _canMove = !_canMove;
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == _enemyTag)
-        {
-            PlayerHP -= EnemyScript.Attack;
-            Debug.Log(PlayerHP);
-            //print("残りのプレイヤーのHP" + BattleManager.battleInstance.playerHP);
-        }
-        if (collision.gameObject.tag == _bossTag)
-        {
-            PlayerHP -= EnemyScript.Attack;
-        }
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        /*
-        //if (other.gameObject.tag == enemyTag)
-        //{
-        //    playerHP -= BattleManager.battleInstance.enemyAttack;
-        //    Debug.Log(playerHP);
-        //    //print("残りのプレイヤーのHP" + BattleManager.battleInstance.playerHP);
-        //}
-        //if (other.gameObject.tag == bossTag)
-        //{
-        //    playerHP -= BattleManager.battleInstance.bossAttack;
-        //}
-        */
-        
-    }
 
-    private void Speed(InputAction.CallbackContext obj)//走るバグ
+    public void Change() => _canMove = !_canMove;
+    public void HPItem()
     {
-        _animator.SetTrigger("speedUp");
-        Debug.Log("a");
+        _items.Add(new ItemPortion());
+        if (PlayerHP == 100)
+        {
+            print("回復しても意味ないよ");
+        }
+        if (PlayerHP < 100)
+        {
+            _playerHP += HpHealth;
+            _playerHpSlider.value = PlayerHP;
+            if (PlayerHP >= 100)
+            {
+                _playerHP = 100;
+            }
+        }
+        UseItem(0);
     }
-    public void WeaponFalse() => a.ForEach(x => x.gameObject.SetActive(false));
+    private void UseItem(int index)
+    {
+        ItemBase useItem = _items[index];
+        print(index + 1 + "つ目のアイテムを使った");
+        useItem.Use();
+    }
+    /// <summary>アニメーターで実装</summary>
+    public void WeaponFalse() => _weapon.ForEach(x => x.gameObject.SetActive(false));
 }

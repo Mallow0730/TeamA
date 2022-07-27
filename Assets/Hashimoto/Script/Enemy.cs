@@ -1,11 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Enemy : EnemyBase
+﻿using UnityEngine;
+public class Enemy : EnemyBase,IDamage
 {
-    protected override void Start() => base.Start();
-    protected override void Update() => base.Update();
-    protected override void OnTriggerEnter(Collider other) => base.OnTriggerEnter(other);
-    protected override void EnemyDamege() => base.EnemyDamege();
+    public int Damage => _damage;
+
+    [SerializeField]
+    int _damage;
+    
+    public void GetDamage(int d)
+    {
+        this._damage = d;
+        EnemySlider.value -= Damage;
+        print("<color=green>Playerから</color>" + Damage + "ダメージうけました");
+    }
 }
