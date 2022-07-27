@@ -43,7 +43,7 @@
 | ---- | ---- | ---- |
 |ディレクター兼プランナー|[太田佳寿弥](https://github.com/KazuyaOta)|企画書, 仕様書|
 |プロジェクトマネージャー兼プログラマー|[橋本凛紅](https://github.com/rikuriku0402)|バトル|
-|プランナー|[金田柊也](https://github.com/Shuukane1201)|  | プレゼン資料
+|プランナー|[金田柊也](https://github.com/Shuukane1201)|  | プレゼン資料関連
 |プログラマー|[安達青](https://github.com/Mallow0730)|プロジェクト管理, ショップ|
 |プログラマー|[米丸一護](https://github.com/YONE15)|レベルアップ|
 
