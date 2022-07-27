@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-
+/// <summary>
+/// Enemyの基底クラス
+/// </summary>
 public class EnemyBase : MonoBehaviour
 {
     /// <summary>UIのスライダー</summary>
-    public Slider Slider => _slider;
+    public Slider EnemySlider => _enemySlider;
 
     /// <summary>UIのキャンバス</summary>
     public Canvas Canvas => _canvas;
@@ -26,7 +28,7 @@ public class EnemyBase : MonoBehaviour
     /// <summary>UIのスライダー</summary>
     [SerializeField]
     [Header("UIのスライダー")] 
-    Slider _slider;
+    Slider _enemySlider;
 
     /// <summary>UIのキャンバス</summary>
     [SerializeField]
@@ -43,8 +45,8 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Start()
     {
-        Slider.maxValue = EnemyHP;
-        Slider.value = EnemyHP;
+        EnemySlider.maxValue = EnemyHP;
+        EnemySlider.value = EnemyHP;
         _currentHP = _enemyHP;
     }
 
@@ -52,16 +54,13 @@ public class EnemyBase : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Weapon")
+        if (other.TryGetComponent(out IDamage player))
         {
-            EnemyDamege();
+            player.GetDamage(20);
         }
     }
     protected virtual void EnemyDamege()
     {
-        _enemyHP -= WeaponManager.Instance.AllAttacks.First(x => x.Name == "刀").Attack;
-        print(EnemyHP);
-        Slider.value = EnemyHP;
         if (EnemyHP <= 0)
         {
             BattleManager.Instance.EnemyRemove(gameObject);

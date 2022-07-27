@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System.Linq;
-
-public class Player : MonoBehaviour
+/// <summary>
+/// Playerの神クラス
+/// </summary>
+public class Player : MonoBehaviour,IDamage
 {
     /// <summary>Playerの移動速度</summary>
     public float MaxSpeed => _maxSpeed;
@@ -71,6 +73,9 @@ public class Player : MonoBehaviour
     /// <summary>動くかの判別</summary>
     bool _canMove;
 
+    ///<summary>ダメージ力</summary>
+    public int Damage => _damage;
+
     /// <summary>PlayerHP</summary>
     [SerializeField]
     [Header("プレイヤーHP")]
@@ -86,6 +91,11 @@ public class Player : MonoBehaviour
     [Header("HPの回復量")]
     int _hpHealth;
 
+    ///<summary>ダメージ力</summary>
+    [SerializeField]
+    [Header("ダメージ力")]
+    int _damage;
+
     /// <summary>EnemyScript</summary>
     [SerializeField] 
     [Header("EnemyScript")]
@@ -94,7 +104,7 @@ public class Player : MonoBehaviour
     List<ItemBase> _items = new List<ItemBase>();
 
 
-    const float X_MOVE = -960f;
+    const float X_MOVE = 960f;
     const float SECONDS = 1f;
 
     [SerializeField]
@@ -114,7 +124,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        Scenemanager.Instance.FadeIn(X_MOVE, SECONDS);
+        Scenemanager.Instance.FadeIn(-X_MOVE, SECONDS);
         _playerHpSlider.maxValue = PlayerHP;
     }
 
@@ -146,13 +156,19 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.TryGetComponent(out IDamage enemy))
+        {
+            enemy.GetDamage(10);//マジックナンバー修正しょうね
+        }
+    }
+    public void GetDamage(int d)
+    {
+        this._damage = d;
+        PlayerHpSlider.value -= Damage;
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Enemy")
-        {
-            PlayerKill();
-        }
+        
     }
     public void PlayerKill()
     {
@@ -162,6 +178,7 @@ public class Player : MonoBehaviour
         if (PlayerHP <= 0)
         {
             gameObject.SetActive(false);
+            Scenemanager.Instance.FadeOut(GAMEOVER_SCENE,+X_MOVE,SECONDS);
         }
     }
 
@@ -263,19 +280,14 @@ public class Player : MonoBehaviour
                 _playerHP = 100;
             }
         }
-        //_playerHP += 25;
-        //_playerHP = (int)PlayerHpSlider.value;
         UseItem(0);
     }
-
     private void UseItem(int index)
     {
         ItemBase useItem = _items[index];
         print(index + 1 + "つ目のアイテムを使った");
         useItem.Use();
     }
-
     /// <summary>アニメーターで実装</summary>
     public void WeaponFalse() => _weapon.ForEach(x => x.gameObject.SetActive(false));
-    //public void WeaponTrue() => _weapon.ForEach(x => x.gameObject.SetActive(true));
 }

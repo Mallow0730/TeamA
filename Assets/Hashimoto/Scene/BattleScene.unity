@@ -1713,6 +1713,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5203cdd17a4f5fb4e80dabfffe61bd5e, type: 3}
+--- !u!114 &955653413 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5048699095691721092, guid: 17f7bb4978b42484bb40234b670fe20f,
+    type: 3}
+  m_PrefabInstance: {fileID: 5048699096325356102}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &969502650
 GameObject:
   m_ObjectHideFlags: 0
@@ -2390,8 +2402,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1562044378}
-  m_LocalRotation: {x: -0.018141478, y: 0.000000059604645, z: -0.000000014901161,
-    w: 0.99983543}
+  m_LocalRotation: {x: -0.01814147, y: 0.000000059604645, z: 0.000000007450581, w: 0.99983543}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2916,6 +2927,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6392265427602393356, guid: 5203cdd17a4f5fb4e80dabfffe61bd5e,
+        type: 3}
+      propertyPath: m_Value
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5203cdd17a4f5fb4e80dabfffe61bd5e, type: 3}
 --- !u!1 &4238446773758804900 stripped
@@ -2945,13 +2961,13 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1971511373862975214, guid: 069181fff38596b499662390d84ae142,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: m_TagString
+      value: Weapon
       objectReference: {fileID: 0}
     - target: {fileID: 4237470357213091278, guid: 069181fff38596b499662390d84ae142,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: m_TagString
+      value: Weapon
       objectReference: {fileID: 0}
     - target: {fileID: 8437289589030306177, guid: 069181fff38596b499662390d84ae142,
         type: 3}
@@ -3042,6 +3058,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4940966734313691620, guid: 17f7bb4978b42484bb40234b670fe20f,
+        type: 3}
+      propertyPath: _enemySlider
+      value: 
+      objectReference: {fileID: 955653413}
     - target: {fileID: 5048699096340239727, guid: 17f7bb4978b42484bb40234b670fe20f,
         type: 3}
       propertyPath: m_AnchorMax.y
